@@ -1,3 +1,0 @@
-class component extends HTMLElement {
-    
-}
