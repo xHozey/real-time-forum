@@ -1,5 +1,6 @@
 const template = document.createElement('template')
 template.innerHTML = `<div id="form">
+        <a href="/register" class="href">Register</a>
         <h1>LOGIN</h1>
         <p>Username or email:</p>
         <input type="text" class="input-form">
