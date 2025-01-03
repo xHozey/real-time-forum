@@ -13,50 +13,146 @@ body {
     background-attachment: fixed;
 }
 
-.input-form {
-    font-style: normal;
-    padding: 7px;
-    width: 100%;
-    border-radius: 5px;
-    outline: none;
-    font-size: 15px;
-    box-shadow: 10px;
-
-}
-
-#form {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#form h1 {
-    font-size: 60px;
+.login {
+    display: grid;
     text-align: center;
-    margin: 40px 0;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 1fr repeat(4, 100px) 1fr;
+    grid-template-rows: repeat(15, 100px);
+    grid-template-areas: ". . . . . href"
+        ". . . . . ."
+        ". . title title . ."
+        ". . . . . ."
+        ". . eu eu . ."
+        ". . pass pass . ."
+        ". . btn btn . ."
+        ". . . . . .";
 }
 
-#form p {
-    font-size: 20px;
-    margin: 10px 0;
+
+
+.login h1,
+.register h1 {
+    font-size: 3.5rem;
+    grid-area: title;
 }
 
-#form .btn {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 20px 0;
-    padding: 10px 5px;
-    width: 40%;
-    border: solid 2px;
-    border-radius: 20px;
-    font-size: 20px;
+.login .container-eu {
+    grid-area: eu;
+}
+
+.login .container-password {
+    grid-area: pass;
+}
+
+
+
+.login .btn,
+.register .btn {
+    width: 50%;
+    height: 35%;
+    margin-left: 25%;
     cursor: pointer;
+    grid-area: btn;
+    border: solid 2px;
+    border-radius: 10px;
 }
 
-.a {
-    position: absolute;
-    top: 0;
-    left:  0;
+.register .btn {
+    height: 45%;
+
+}
+
+.login .btn:hover,
+.register .btn:hover {
+    color: rgb(79, 79, 126);
+}
+
+.login a,
+.register a {
+    grid-area: href;
+    text-decoration: none;
+    color: black;
+    text-align: end;
+    margin: 1.5rem;
+}
+
+.login a,
+.register a {
+    color: rgb(79, 79, 126);
+}
+
+.register {
+    display: grid;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 1fr repeat(4, 100px) 1fr;
+    grid-template-rows: repeat(13, 70px);
+    grid-template-areas: ". . . . . href"
+        ". . title title . ."
+        ". . . . . ."
+        ". . user user . ."
+        ". . age age . ."
+        ". . gender gender . ."
+        ". . fn fn . ."
+        ". . ln ln . ."
+        ". . e e . ."
+        ". . p p . ."
+        ". . . . . ."
+        ". . btn btn . ."
+        ". . . . . .";
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-login,
+.input-register {
+    font-family:'Lucida Casual', 'Comic Sans MS';    
+    font-style: normal;
+    font-size: 1rem;
+    width: 100%;
+    height: 45%;
+    margin-left: 1rem;
+    border: solid 1px;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.login p, .register p {
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.register .container-user {
+    grid-area: user;
+}
+
+.register .container-age {
+    grid-area: age;
+}
+
+.register .container-gender {
+    grid-area: gender;
+}
+
+.register .container-fn {
+    grid-area: fn;
+}
+
+.register .container-ln {
+    grid-area: ln;
+}
+
+.register .container-e {
+    grid-area: e;
+}
+
+.register .container-p {
+    grid-area: p;
 }
