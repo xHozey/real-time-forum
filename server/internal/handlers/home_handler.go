@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
+func (db *HandlerLayer) HomeHandler(w http.ResponseWriter, r *http.Request) {
 	tpl, err := template.ParseFiles("../../client/index.html")
 	if err != nil {
 		log.Println(err)
