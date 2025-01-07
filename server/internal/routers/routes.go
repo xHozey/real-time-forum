@@ -3,6 +3,7 @@ package routes
 import (
 	"database/sql"
 	"net/http"
+	"time"
 
 	"forum/server/internal/data"
 	"forum/server/internal/handlers"
@@ -16,7 +17,9 @@ func Routes(db *sql.DB) *http.ServeMux {
 	fs := http.FileServer(http.Dir("../../client/app"))
 	mux.Handle("/app/", http.StripPrefix("/app/", fs))
 	mux.HandleFunc("/ws", dbLayers.WsHandler)
-
+	mux.Handle("POST /api/login", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.LoginHandler), 10, time.Second*30))
+	mux.Handle("POST /api/register", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.RegisterHandler), 10, time.Second*30))
+	mux.HandleFunc("POST /logout", dbLayers.LogoutHandler)
 	return mux
 }
 

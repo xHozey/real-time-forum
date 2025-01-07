@@ -23,7 +23,7 @@ func (db *MiddleWareLayer) Allow(ip string) bool {
 
 func (db *MiddleWareLayer) RateLimiter(next http.Handler, maxTokens int, refillTime time.Duration) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		db.MiddlewareData.GiveBucket(r.RemoteAddr, maxTokens, refillTime)
+		db.MiddlewareData.GiveBucket(r.RemoteAddr, maxTokens, refillTime, r.URL.Path)
 		if !db.Allow(r.RemoteAddr) {
 			http.Error(w, "Too many request", http.StatusTooManyRequests)
 			return

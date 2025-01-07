@@ -1,25 +1,31 @@
 package data
 
-import "time"
+import (
+	"log"
+	"time"
+)
 
-func (db *DataLayer) GiveBucket(ip string, tokens int, refill time.Duration) {
-	db.DataDB.Exec("INSERT OR IGNORE INTO bucketToken (ip, tokens, maxTokens, refill) VALUES (?,?,?,?)", ip, tokens, tokens, refill)
+func (db *DataLayer) GiveBucket(ip string, tokens int, refill time.Duration, route string) {
+	_, err := db.DataDB.Exec("INSERT OR IGNORE INTO token_bucket (ip, tokens, maxTokens, refill, route) VALUES (?,?,?,?,?)", ip, tokens, tokens, refill, route)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (db *DataLayer) RefillTokens(tokensToAdd int, ip string) {
-	db.DataDB.Exec("UPDATE tokenBucket SET tokens = MIN(?, maxTokens) WHERE ip = ?", tokensToAdd, ip)
+	db.DataDB.Exec("UPDATE token_bucket SET tokens = MIN(?, maxTokens), lastRefill = ? WHERE ip = ?", tokensToAdd, time.Now(), ip)
 }
 
 func (db *DataLayer) ExtractBucketDate(ip string) (time.Duration, time.Time) {
 	var refill time.Duration
 	var lastRefill time.Time
-	db.DataDB.QueryRow("SELECT refill, lastRefill FROM bucketToken WHERE ip = ?", ip).Scan(&refill, &lastRefill)
+	db.DataDB.QueryRow("SELECT refill, lastRefill FROM token_bucket WHERE ip = ?", ip).Scan(&refill, &lastRefill)
 	return refill, lastRefill
 }
 
 func (db *DataLayer) TakeToken(ip string) bool {
 	result, err := db.DataDB.Exec(`
-    UPDATE tokenBucket 
+    UPDATE token_bucket 
     SET tokens = tokens - 1 
     WHERE ip = ? AND tokens > 0`, ip)
 	if err != nil {
