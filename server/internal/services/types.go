@@ -1,9 +1,9 @@
 package services
 
 import (
-	data "forum/server/internal/data"
+	middleware "forum/server/internal/middleWare"
 )
 
 type ServiceLayer struct {
-	ServiceDB data.DataLayer
+	ServiceDB middleware.MiddleWareLayer
 }

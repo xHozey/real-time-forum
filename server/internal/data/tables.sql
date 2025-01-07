@@ -69,6 +69,14 @@ CREATE TABLE IF NOT EXISTS post_category(
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS bucketToken(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ip TEXT NOT NULL,
+    tokens INTEGER NOT NULL,
+    maxTokens INTEGER NOT NULL,
+    refill INTEGER NOT NULL,
+    lastRefill DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 INSERT
     OR IGNORE INTO category (category_name)
 VALUES ('tech'),

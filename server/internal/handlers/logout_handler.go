@@ -7,7 +7,7 @@ import (
 )
 
 func (db *HandlerLayer) LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	id, _ := db.HandlerDB.ServiceDB.GetUserBySession(utils.GetCookie(r))
-	db.HandlerDB.ServiceDB.DeleteSession(id)
+	id, _ := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	db.HandlerDB.ServiceDB.MiddlewareData.DeleteSession(id)
 	utils.DeleteCookie(w)
 }
