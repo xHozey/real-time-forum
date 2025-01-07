@@ -18,11 +18,17 @@ func (db *HandlerLayer) RegisterHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	if err := db.HandlerDB.ValidateCredentials(userInfo); err != nil {
-		err = utils.SendResponseStatus(w, http.StatusBadRequest, "Bad Request")
+		err = utils.SendResponseStatus(w, http.StatusBadRequest, err.Error())
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
 		return
 	}
-	
+	if err := db.HandlerDB.InsertClearCredential(userInfo); err != nil {
+		err = utils.SendResponseStatus(w, http.StatusInternalServerError, "Internal server error")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
 }

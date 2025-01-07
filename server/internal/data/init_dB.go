@@ -6,7 +6,7 @@ import (
 )
 
 func openConn() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "../../forum.db")
+	db, err := sql.Open("sqlite3", "./forum.db")
 	if err != nil {
 		return db, err
 	}
@@ -14,11 +14,14 @@ func openConn() (*sql.DB, error) {
 }
 
 func initTables(db *sql.DB) error {
-	data, err := os.ReadFile("../internal/data/tables.sql")
+	data, err := os.ReadFile("./internal/data/tables.sql")
 	if err != nil {
 		return err
 	}
-	db.Exec(string(data))
+	_, err = db.Exec(string(data))
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

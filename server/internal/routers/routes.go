@@ -17,6 +17,8 @@ func Routes(db *sql.DB) *http.ServeMux {
 	mux.Handle("/app/", http.StripPrefix("/app/", fs))
 	mux.Handle("/", middleware.MethodMiddleware(http.HandlerFunc(dbLayers.HomeHandler), http.MethodGet))
 	mux.Handle("/login", middleware.MethodMiddleware(http.HandlerFunc(dbLayers.LoginHandler), http.MethodPost))
+	mux.Handle("/register", middleware.MethodMiddleware(http.HandlerFunc(dbLayers.RegisterHandler), http.MethodPost))
+	mux.Handle("/logout", middleware.MethodMiddleware(http.HandlerFunc(dbLayers.LogoutHandler), http.MethodPost))
 	mux.HandleFunc("/ws", dbLayers.WsHandler)
 	return mux
 }

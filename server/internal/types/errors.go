@@ -13,3 +13,5 @@ var (
 	ErrIncorrectLength      = errors.New("characters must be between 3 and 32")
 	ErrAgeLimit             = errors.New("incorrect age")
 )
+
+const CookieName = "session_cookie"

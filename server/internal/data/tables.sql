@@ -5,14 +5,14 @@ CREATE TABLE IF NOT EXISTS user_profile(
     password TEXT NOT NULL,
     gender TEXT NOT NULL,
     firstname TEXT NOT NULL,
-    lastname TEXT NOT NULL
+    lastname TEXT NOT NULL,
     age INTEGER NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE IF NOT EXISTS session(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
-    session UNIQUE NOT NULL,
+    token UNIQUE NOT NULL,
     expire_at DATETIME NOT NULL,
     created_at DATETIME NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
@@ -73,4 +73,4 @@ INSERT
     OR IGNORE INTO category (category_name)
 VALUES ('tech'),
     ('sports'),
-    ('games'),
+    ('games')

@@ -1,9 +1,11 @@
 package services
 
 import (
-	"html"
 	"net/mail"
+	"strings"
+
 	"forum/server/internal/types"
+	"forum/server/internal/utils"
 )
 
 func (service *ServiceLayer) ValidateCredentials(user types.User) error {
@@ -13,16 +15,16 @@ func (service *ServiceLayer) ValidateCredentials(user types.User) error {
 	if err := validateGender(user.Gender); err != nil {
 		return err
 	}
-	if err := validateLength(user.FirstName); err != nil {
+	if err := utils.ValidateLength(user.FirstName); err != nil {
 		return err
 	}
-	if err := validateLength(user.LastName); err != nil {
+	if err := utils.ValidateLength(user.LastName); err != nil {
 		return err
 	}
-	if err := validateLength(user.Nickname); err != nil {
+	if err := utils.ValidateLength(user.Nickname); err != nil {
 		return err
 	}
-	if err := validateLength(user.Password); err != nil {
+	if err := utils.ValidateLength(user.Password); err != nil {
 		return err
 	}
 	if user.Age > 100 || user.Age <= 0 {
@@ -35,33 +37,33 @@ func (service *ServiceLayer) ValidateCredentials(user types.User) error {
 }
 
 func (db *ServiceLayer) checkIfExists(user types.User) error {
-	if exists := db.ServiceDB.GetUserEmail(user.Email); exists {
+	if exists := db.ServiceDB.GetUserEmail(strings.ToLower(user.Email)); exists {
 		return types.ErrEmailAlreadyTaken
 	}
-	if exists := db.ServiceDB.GetUserNickname(user.Nickname); exists {
+	if exists := db.ServiceDB.GetUserNickname(strings.ToLower(user.Nickname)); exists {
 		return types.ErrNicknameAlreadyTaken
 	}
 	return nil
 }
 
-func (db *ServiceLayer) InsertClearCredential(user types.User) {
-	user.Nickname = html.EscapeString(user.Nickname)
-	user.LastName = html.EscapeString(user.LastName)
-	user.FirstName = html.EscapeString(user.FirstName)
-	user.Email = html.EscapeString(user.Email)
-	db.ServiceDB.InsertUser(user)
+func (db *ServiceLayer) InsertClearCredential(user types.User) error {
+	pass, err := utils.HashPass(user.Password)
+	if err != nil {
+		return err
+	}
+	user.Password = pass
+	user.Nickname = strings.ToLower(user.Nickname)
+	user.Email = strings.ToLower(user.Email)
+	err = db.ServiceDB.InsertUser(user)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func validateGender(gender string) error {
 	if gender != "male" && gender != "female" {
 		return types.ErrIncorrectGender
-	}
-	return nil
-}
-
-func validateLength(data string) error {
-	if len(data) <= 3 || len(data) >= 32 {
-		return types.ErrIncorrectLength
 	}
 	return nil
 }
