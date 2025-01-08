@@ -1,9 +1,13 @@
 package data
 
-import "forum/server/internal/types"
+import (
+	"fmt"
+
+	"forum/server/internal/types"
+)
 
 func (db *DataLayer) InsertPost(postData types.Post) error {
-	res, err := db.DataDB.Exec("INSERT INTO post (user_id,content) VALUES (?,?)", postData.User, postData.Content)
+	res, err := db.DataDB.Exec("INSERT INTO post (user_id,content) VALUES (?,?)", postData.UserId, postData.Content)
 	if err != nil {
 		return err
 	}
@@ -24,4 +28,16 @@ func (db *DataLayer) GetCategorieId(categorie string) int {
 	var id int
 	db.DataDB.QueryRow("SELECT id FROM category WHERE category_name = ?", categorie).Scan(&id)
 	return id
+}
+
+// func (db *DataLayer) GetAllPosts() {
+// 	posts := []types.Post{}
+// 	db.DataDB.Query("")
+// }
+
+func (db *DataLayer) GetPostById(id int) types.Post {
+	post := types.Post{}
+	err := db.DataDB.QueryRow(`SELECT * FROM post WHERE id = ?`, id).Scan(&post.Id, &post.UserId, &post.Content, &post.CreationDate)
+	fmt.Println(err)
+	return post
 }

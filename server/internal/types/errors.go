@@ -14,6 +14,7 @@ var (
 	ErrAgeLimit             = errors.New("incorrect age")
 	ErrInvalidCategorie     = errors.New("invalid categorie")
 	ErrInvalidPost          = errors.New("invalid post")
+	ErrUnauthorized         = errors.New("unauthorized")
 )
 
 const CookieName = "session_cookie"

@@ -6,8 +6,6 @@ import (
 	"time"
 
 	"forum/server/internal/types"
-
-	"github.com/gofrs/uuid"
 )
 
 func DecodeRequest(r *http.Request, receiver any) error {
@@ -41,9 +39,4 @@ func DeleteCookie(w http.ResponseWriter) {
 	http.SetCookie(w, &http.Cookie{
 		MaxAge: -1,
 	})
-}
-
-func GenerateToken() string {
-	uid, _ := uuid.NewV4()
-	return uid.String()
 }

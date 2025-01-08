@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -11,12 +12,16 @@ import (
 func (db *HandlerLayer) PostHandler(w http.ResponseWriter, r *http.Request) {
 	post := types.Post{}
 	utils.DecodeRequest(r, &post)
+	post.UserId, _ = db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	if post.UserId == 0 {
+		utils.SendResponseStatus(w, http.StatusUnauthorized, types.ErrUnauthorized.Error())
+		return
+	}
 	err := db.HandlerDB.ValidatePost(post)
 	if err != nil {
 		utils.SendResponseStatus(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	_, post.User = db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
 	err = db.HandlerDB.ServiceDB.MiddlewareData.InsertPost(post)
 	if err != nil {
 		utils.SendResponseStatus(w, http.StatusInternalServerError, "Internal server error")
@@ -28,7 +33,7 @@ func (db *HandlerLayer) GetPostsHandler(w http.ResponseWriter, r *http.Request) 
 }
 
 func (db *HandlerLayer) GetPostByIdHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := strconv.Atoi(r.PathValue("id"))
-	if err != nil {
-	}
+	id, _ := strconv.Atoi(r.PathValue("id"))
+	post := db.HandlerDB.ServiceDB.MiddlewareData.GetPostById(id)
+	fmt.Println(post)
 }

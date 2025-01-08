@@ -3,6 +3,7 @@ package utils
 import (
 	"forum/server/internal/types"
 
+	"github.com/gofrs/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -24,4 +25,9 @@ func ValidateLength(data string) error {
 		return types.ErrIncorrectLength
 	}
 	return nil
+}
+
+func GenerateToken() string {
+	uid, _ := uuid.NewV4()
+	return uid.String()
 }

@@ -38,6 +38,9 @@ func (db *DataLayer) GetUserBySession(token string) (int, string) {
 	var id int
 	var nickname string
 	db.DataDB.QueryRow("SELECT id, nickname FROM user_profile LEFT JOIN session ON  user_profile.id = session.user_id WHERE session.token = ?", token).Scan(&id, &nickname)
+	if !db.ValidateSession(id) {
+		return 0, ""
+	}
 	return id, nickname
 }
 

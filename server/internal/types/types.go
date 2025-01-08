@@ -14,7 +14,7 @@ type User struct {
 
 type Post struct {
 	Id           int       `json:"id"`
-	User         string    `json:"user"`
+	UserId       int       `json:"user_id"`
 	Content      string    `json:"content"`
 	Categories   []string  `json:"categories"`
 	Likes        int       `json:"likes"`
@@ -24,7 +24,7 @@ type Post struct {
 
 type Comment struct {
 	Id           int       `json:"id"`
-	User         string    `json:"user"`
+	UserId       int       `json:"user_id"`
 	Content      string    `json:"content"`
 	Likes        int       `json:"likes"`
 	Dislikes     int       `json:"dislikes"`

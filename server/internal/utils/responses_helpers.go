@@ -10,8 +10,6 @@ func SendResponseStatus(w http.ResponseWriter, statusCode int, message string) {
 	w.WriteHeader(statusCode)
 	err := json.NewEncoder(w).Encode(message)
 	if err != nil {
-		if err != nil {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-		}
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 }
