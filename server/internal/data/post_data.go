@@ -2,9 +2,8 @@ package data
 
 import "forum/server/internal/types"
 
-func (db *DataLayer) InsertPost(postData types.Post)error {
-	user_id := db.GetUserByName(postData.User)
-	res, err := db.DataDB.Exec("INSERT INTO post (user_id,content) VALUES (?,?)", user_id, postData.Content)
+func (db *DataLayer) InsertPost(postData types.Post) error {
+	res, err := db.DataDB.Exec("INSERT INTO post (user_id,content) VALUES (?,?)", postData.User, postData.Content)
 	if err != nil {
 		return err
 	}

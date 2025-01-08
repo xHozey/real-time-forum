@@ -13,10 +13,13 @@ func (db *HandlerLayer) PostHandler(w http.ResponseWriter, r *http.Request) {
 	utils.DecodeRequest(r, &post)
 	err := db.HandlerDB.ValidatePost(post)
 	if err != nil {
-		err = utils.SendResponseStatus(w, http.StatusBadRequest, "Bad Request")
-		if err != nil {
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-		}
+		utils.SendResponseStatus(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	_, post.User = db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	err = db.HandlerDB.ServiceDB.MiddlewareData.InsertPost(post)
+	if err != nil {
+		utils.SendResponseStatus(w, http.StatusInternalServerError, "Internal server error")
 		return
 	}
 }

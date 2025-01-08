@@ -11,24 +11,15 @@ func (db *HandlerLayer) RegisterHandler(w http.ResponseWriter, r *http.Request) 
 	userInfo := types.User{}
 	err := utils.DecodeRequest(r, &userInfo)
 	if err != nil {
-		err = utils.SendResponseStatus(w, http.StatusBadRequest, "Bad Request")
-		if err != nil {
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-		}
+		utils.SendResponseStatus(w, http.StatusBadRequest, "Bad Request")
 		return
 	}
 	if err := db.HandlerDB.ValidateCredentials(userInfo); err != nil {
-		err = utils.SendResponseStatus(w, http.StatusBadRequest, err.Error())
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-		}
+		utils.SendResponseStatus(w, http.StatusBadRequest, err.Error())
 		return
 	}
 	if err := db.HandlerDB.InsertClearCredential(userInfo); err != nil {
-		err = utils.SendResponseStatus(w, http.StatusInternalServerError, "Internal server error")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
+		utils.SendResponseStatus(w, http.StatusInternalServerError, "Internal server error")
 		return
 	}
 }
