@@ -6,13 +6,13 @@ import (
 	"forum/server/internal/types"
 )
 
-func (db *DataLayer) GetUserEmail(email string) bool {
+func (db *DataLayer) CheckEmailExist(email string) bool {
 	exists := false
 	db.DataDB.QueryRow("SELECT EXISTS(SELECT 1 FROM user_profile WHERE email = ?)", email).Scan(&exists)
 	return exists
 }
 
-func (db *DataLayer) GetUserNickname(nickname string) bool {
+func (db *DataLayer) CheckUserExist(nickname string) bool {
 	exists := false
 	db.DataDB.QueryRow("SELECT EXISTS(SELECT 1 FROM user_profile WHERE nickname = ?)", nickname).Scan(&exists)
 	return exists
@@ -55,4 +55,10 @@ func (db *DataLayer) ValidateSession(id int) bool {
 	var expireTime time.Time
 	db.DataDB.QueryRow("SELECT expire_at FROM session LEFT JOIN user_profile ON  session.user_id = user_profile.id WHERE user_profile.id = ?", id).Scan(&expireTime)
 	return expireTime.Compare(time.Now()) > 0
+}
+
+func (db *DataLayer) GetUserByName(nickname string) int {
+	var id int
+	db.DataDB.QueryRow("SELECT id FROM user_profile WHERE nickname = ?", nickname).Scan(&id)
+	return id
 }

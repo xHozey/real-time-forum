@@ -12,6 +12,8 @@ var (
 	ErrIncorrectGender      = errors.New("please choose male or female")
 	ErrIncorrectLength      = errors.New("characters must be between 3 and 32")
 	ErrAgeLimit             = errors.New("incorrect age")
+	ErrInvalidCategorie     = errors.New("invalid categorie")
+	ErrInvalidPost          = errors.New("invalid post")
 )
 
 const CookieName = "session_cookie"

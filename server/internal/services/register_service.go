@@ -37,10 +37,10 @@ func (service *ServiceLayer) ValidateCredentials(user types.User) error {
 }
 
 func (db *ServiceLayer) checkIfExists(user types.User) error {
-	if exists := db.ServiceDB.MiddlewareData.GetUserEmail(strings.ToLower(user.Email)); exists {
+	if exists := db.ServiceDB.MiddlewareData.CheckEmailExist(strings.ToLower(user.Email)); exists {
 		return types.ErrEmailAlreadyTaken
 	}
-	if exists := db.ServiceDB.MiddlewareData.GetUserNickname(strings.ToLower(user.Nickname)); exists {
+	if exists := db.ServiceDB.MiddlewareData.CheckUserExist(strings.ToLower(user.Nickname)); exists {
 		return types.ErrNicknameAlreadyTaken
 	}
 	return nil
