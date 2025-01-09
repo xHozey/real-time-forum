@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS comment(
     FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE,
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
-CREATE TABLE IF NOT EXISTS postReact(
+CREATE TABLE IF NOT EXISTS post_react(
     post_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     type INTEGER NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS postReact(
     FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
 );
-CREATE TABLE IF NOT EXISTS commentReact(
+CREATE TABLE IF NOT EXISTS comment_react(
     comment_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     type INTEGER NOT NULL,

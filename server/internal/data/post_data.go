@@ -1,13 +1,13 @@
 package data
 
 import (
-	"fmt"
+	"html"
 
 	"forum/server/internal/types"
 )
 
 func (db *DataLayer) InsertPost(postData types.Post) error {
-	res, err := db.DataDB.Exec("INSERT INTO post (user_id,content) VALUES (?,?)", postData.UserId, postData.Content)
+	res, err := db.DataDB.Exec("INSERT INTO post (user_id,content) VALUES (?,?)", postData.UserId, html.EscapeString(postData.Content))
 	if err != nil {
 		return err
 	}
@@ -30,14 +30,54 @@ func (db *DataLayer) GetCategorieId(categorie string) int {
 	return id
 }
 
-// func (db *DataLayer) GetAllPosts() {
-// 	posts := []types.Post{}
-// 	db.DataDB.Query("")
-// }
+func (db *DataLayer) GetAllPosts() ([]types.Post, error) {
+	posts := []types.Post{}
+	rows, err := db.DataDB.Query(`
+    SELECT 
+        p.*,
+        (SELECT COUNT(*) FROM post_react WHERE post_id = p.id AND type = 1) AS likes,
+        (SELECT COUNT(*) FROM post_react WHERE post_id = p.id AND type = -1) AS dislikes
+    FROM post p`)
+	if err != nil {
+		return []types.Post{}, err
+	}
+	for rows.Next() {
+		post := types.Post{}
+		rows.Scan(&post.Id, &post.UserId, &post.Content, &post.CreationDate, &post.Likes, &post.Dislikes)
+		rows, err := db.DataDB.Query("SELECT category_name FROM category c LEFT JOIN post_category p ON c.id = p.category_id WHERE p.post_id = ?", post.Id)
+		if err != nil {
+			return []types.Post{}, err
+		}
+		for rows.Next() {
+			category := ""
+			rows.Scan(&category)
+			post.Categories = append(post.Categories, category)
+		}
+		posts = append(posts, post)
+	}
+	return posts, nil
+}
 
-func (db *DataLayer) GetPostById(id int) types.Post {
+func (db *DataLayer) GetPostById(id int) (types.Post, error) {
 	post := types.Post{}
-	err := db.DataDB.QueryRow(`SELECT * FROM post WHERE id = ?`, id).Scan(&post.Id, &post.UserId, &post.Content, &post.CreationDate)
-	fmt.Println(err)
-	return post
+	err := db.DataDB.QueryRow(`
+    SELECT 
+        p.*,
+        (SELECT COUNT(*) FROM post_react WHERE post_id = p.id AND type = 1) AS likes,
+        (SELECT COUNT(*) FROM post_react WHERE post_id = p.id AND type = -1) AS dislikes
+    FROM post p
+    WHERE p.id = ?`, id).Scan(&post.Id, &post.UserId, &post.Content, &post.CreationDate, &post.Likes, &post.Dislikes)
+	if err != nil {
+		return types.Post{}, err
+	}
+	rows, err := db.DataDB.Query("SELECT category_name FROM category c LEFT JOIN post_category p ON c.id = p.category_id WHERE p.post_id = ?", post.Id)
+	if err != nil {
+		return types.Post{}, err
+	}
+	for rows.Next() {
+		category := ""
+		rows.Scan(&category)
+		post.Categories = append(post.Categories, category)
+	}
+	return post, nil
 }
