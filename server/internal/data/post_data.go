@@ -19,6 +19,12 @@ func (db *DataLayer) InsertPost(postData types.Post) error {
 	return err
 }
 
+func (db *DataLayer) CheckIfPostExist(post_id int) bool {
+	exists := false
+	db.DataDB.QueryRow("SELECT EXISTS(SELECT 1 FROM post WHERE id = ?)", post_id).Scan(&exists)
+	return exists
+}
+
 func (db *DataLayer) InsertPostCategorie(post_id int64, categorie_id int) error {
 	_, err := db.DataDB.Exec("INSERT INTO post_category (post_id,category_id) VALUES (?,?)", post_id, categorie_id)
 	return err
