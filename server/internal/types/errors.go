@@ -17,6 +17,7 @@ var (
 	ErrInvalidComment       = errors.New("invalid comment")
 	ErrUnauthorized         = errors.New("unauthorized")
 	ErrNotExist             = errors.New("not exist")
+	ErrInvalidReaction      = errors.New("invalid reaction")
 )
 
 const CookieName = "session_cookie"

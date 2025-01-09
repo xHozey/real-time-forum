@@ -31,3 +31,9 @@ type Comment struct {
 	Dislikes     int       `json:"dislikes"`
 	CreationDate time.Time `json:"creation_date"`
 }
+
+type Reaction struct {
+	Thread_type string `json:"thread_type"`
+	Thread_id   int    `json:"thread_id"`
+	Reaction    int    `json:"reaction"`
+}
