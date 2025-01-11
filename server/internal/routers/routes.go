@@ -9,14 +9,15 @@ import (
 	"forum/server/internal/handlers"
 	middleware "forum/server/internal/middleWare"
 	"forum/server/internal/services"
+	"forum/server/internal/websocket"
 )
 
 func Routes(db *sql.DB) *http.ServeMux {
-	dbLayers := LinkLayers(db)
+	dbLayers, wsLayer := LinkLayers(db)
 	mux := http.NewServeMux()
 	fs := http.FileServer(http.Dir("../../client/app"))
 	mux.Handle("/app/", http.StripPrefix("/app/", fs))
-	mux.HandleFunc("/ws", dbLayers.WsHandler)
+	mux.HandleFunc("/ws", wsLayer.WsHandler)
 	mux.Handle("POST /api/login", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.LoginHandler), 3, time.Second*30))
 	mux.Handle("POST /api/register", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.RegisterHandler), 3, time.Second*30))
 	mux.Handle("POST /api/addpost", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.PostHandler), 10, time.Second*5))
@@ -29,10 +30,11 @@ func Routes(db *sql.DB) *http.ServeMux {
 	return mux
 }
 
-func LinkLayers(db *sql.DB) handlers.HandlerLayer {
+func LinkLayers(db *sql.DB) (handlers.HandlerLayer, websocket.WSlayer) {
 	dataDb := data.DataLayer{DataDB: db}
 	middlewareDb := middleware.MiddleWareLayer{MiddlewareData: dataDb}
 	serviceDb := services.ServiceLayer{ServiceDB: middlewareDb}
 	handlerDb := handlers.HandlerLayer{HandlerDB: serviceDb}
-	return handlerDb
+	wsData := websocket.WSlayer{Data: db}
+	return handlerDb, wsData
 }
