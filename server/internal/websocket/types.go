@@ -1,13 +1,13 @@
 package websocket
 
 import (
-	"database/sql"
+	"forum/server/internal/data"
 
 	"github.com/gorilla/websocket"
 )
 
 type WSlayer struct {
-	Data *sql.DB
+	Data data.DataLayer
 }
 
 var upgrader = websocket.Upgrader{
@@ -15,15 +15,11 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-type room struct {
-	clients map[*client]bool
-	forward chan []byte
-	
-}
+var Clients = make(map[int]*client)
 
 type client struct {
-	nickname string
-	socket   *websocket.Conn
-	receive  chan []byte
-	room     *room
+	id int
+	conn *websocket.Conn
+	send chan []byte
+	status bool
 }

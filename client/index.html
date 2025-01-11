@@ -11,17 +11,40 @@
 </head>
 
 <body>
-    <div id="app">
-        <div class="login">
-            <a href="/register" class="href" data-link>Register</a>
-            <h1>LOGIN</h1>
-            <input type="text" class="login-user" placeholder="Username or email">
-            <input type="password" class="login-password" placeholder="password">
-            <button class="btn" role="button">Submit</button>
-
-        </div>
-    </div>
-    <script type="module" src="app/app.js"></script>
+    <div id="app"></div>
+    <script>
+        let socket = new WebSocket("ws://localhost:8080/ws")
+        socket.onopen = async () => {
+            try {
+                let res = await fetch("/api/info")
+                let info = await res.json()
+                let doc = document.getElementById('app')
+                info.forEach(element => {
+                    doc.innerHTML += `
+                    <span>${element.nickname}</span>
+                    <div id="">
+                        <div id="msg"></div>
+                        <input type="text" id="${element.user_id}-text">
+                         <button id="btn" onclick="send(${element.user_id})">send</button>
+                    </div>
+                    `
+                });
+            } catch(err) {
+                console.error(err)
+            }
+        }
+        const send = (id) => {
+            socket.send(id + " " + document.getElementById(id+"-text").value)
+        }
+        socket.onmessage = (event) => {
+            console.log("new message");
+            
+            document.getElementById("msg").innerHTML += `<p>${event.data}</p>`
+        }
+        socket.onclose = () => {
+            console.log("goodbye wrold");
+        }
+    </script>
 </body>
 
 </html>

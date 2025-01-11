@@ -1,6 +1,10 @@
 package types
 
-import "time"
+import (
+	"time"
+)
+
+const CookieName = "session_cookie"
 
 type User struct {
 	Nickname  string `json:"nickname"`
@@ -36,4 +40,10 @@ type Reaction struct {
 	Thread_type string `json:"thread_type"`
 	Thread_id   int    `json:"thread_id"`
 	Reaction    int    `json:"reaction"`
+}
+
+type InfoUser struct {
+	User_id  int    `json:"user_id"`
+	Nickname string `json:"nickname"`
+	Status   bool   `json:"status"`
 }

@@ -1,6 +1,7 @@
 package data
 
 import (
+	"log"
 	"time"
 
 	"forum/server/internal/types"
@@ -37,7 +38,10 @@ func (db *DataLayer) InsertUser(user types.User) error {
 func (db *DataLayer) GetUserBySession(token string) (int, string) {
 	var id int
 	var nickname string
-	db.DataDB.QueryRow("SELECT id, nickname FROM user_profile LEFT JOIN session ON  user_profile.id = session.user_id WHERE session.token = ?", token).Scan(&id, &nickname)
+	err := db.DataDB.QueryRow("SELECT p.id, p.nickname FROM user_profile p LEFT JOIN session ON p.id = session.user_id WHERE session.token = ?", token).Scan(&id, &nickname)
+	if err != nil {
+		log.Println(err)
+	}
 	if !db.ValidateSession(id) {
 		return 0, ""
 	}

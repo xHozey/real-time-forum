@@ -20,4 +20,3 @@ var (
 	ErrInvalidReaction      = errors.New("invalid reaction")
 )
 
-const CookieName = "session_cookie"

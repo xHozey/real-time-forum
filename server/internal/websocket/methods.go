@@ -1,42 +1,39 @@
 package websocket
 
 import (
+	"bytes"
+	"log"
+	"strconv"
+
 	"github.com/gorilla/websocket"
 )
 
 func (c *client) read() {
-	defer c.socket.Close()
 	for {
-		_, msg, err := c.socket.ReadMessage()
+		_, msg, err := c.conn.ReadMessage()
 		if err != nil {
-			return
+			log.Println(err)
+			break
 		}
-		c.room.forward <- msg
+		handleMessage(msg)
 	}
 }
 
-func (c *client) write() {
-	defer c.socket.Close()
-	for msg := range c.receive {
-		err := c.socket.WriteMessage(websocket.TextMessage, msg)
-		if err != nil {
-			return
-		}
+func handleMessage(message []byte) {
+	parts := bytes.SplitN(message, []byte(" "), 2)
+	if len(parts) != 2 {
+		return
 	}
+	userid, err := strconv.Atoi(string(parts[0]))
+	if err != nil {
+		return
+	}
+	sendMessage(userid, parts[1])
 }
 
-func newRoom() *room {
-	return &room{
-		forward: make(chan []byte),
-		clients: make(map[*client]bool),
-	}
-}
-
-func (r *room) run() {
-	for {
-		for client := range r.clients {
-			msg := <-r.forward
-			client.receive <- msg
-		}
+func sendMessage(userId int, message []byte) {
+	conn, exists := Clients[userId]
+	if exists {
+		conn.conn.WriteMessage(websocket.TextMessage, message)
 	}
 }
