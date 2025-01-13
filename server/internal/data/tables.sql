@@ -82,4 +82,4 @@ INSERT
     OR IGNORE INTO category (category_name)
 VALUES ('tech'),
     ('sports'),
-    ('games')
+    ('games');

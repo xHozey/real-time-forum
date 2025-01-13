@@ -12,11 +12,10 @@ func (db *HandlerLayer) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	err := utils.DecodeRequest(r, &userInfo)
 	if err != nil {
 		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
-
 		return
 	}
-	userId, validation := db.HandlerDB.ValidateLogin(userInfo)
-	if !validation {
+	userId, err := db.HandlerDB.ValidateLogin(userInfo)
+	if err != nil {
 		utils.SendResponseStatus(w, http.StatusBadRequest, err)
 		return
 	}

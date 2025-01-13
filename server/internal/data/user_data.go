@@ -69,3 +69,17 @@ func (db *DataLayer) GetUserByName(nickname string) int {
 	db.DataDB.QueryRow("SELECT id FROM user_profile WHERE nickname = ?", nickname).Scan(&id)
 	return id
 }
+
+func (db *DataLayer) GetAllUsers(id int) ([]types.InfoUser, error) {
+	users := []types.InfoUser{}
+	rows, err := db.DataDB.Query("SELECT id, nickname FROM user_profile WHERE id != ?", id)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		user := types.InfoUser{}
+		rows.Scan(&user.User_id, &user.Nickname)
+		users = append(users, user)
+	}
+	return users, nil
+}

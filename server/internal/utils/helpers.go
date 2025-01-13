@@ -15,9 +15,9 @@ func HashPass(pass string) (string, error) {
 	return string(hash), nil
 }
 
-func ComparePass(pass string, hash string) bool {
+func ComparePass(pass string, hash string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pass))
-	return err == nil
+	return err
 }
 
 func ValidateLength(data string) error {

@@ -1,6 +1,8 @@
 package websocket
 
 import (
+	"sync"
+
 	"forum/server/internal/data"
 
 	"github.com/gorilla/websocket"
@@ -15,11 +17,14 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-var Clients = make(map[int]*client)
+var (
+	Clients = make(map[int]*client)
+	mu      sync.Mutex
+)
 
 type client struct {
-	id int
-	conn *websocket.Conn
-	send chan []byte
+	id     int
+	conn   *websocket.Conn
 	status bool
+	db     WSlayer
 }

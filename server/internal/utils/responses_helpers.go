@@ -2,12 +2,10 @@ package utils
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
 func SendResponseStatus(w http.ResponseWriter, statusCode int, err error) {
-	log.Println(err)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 	err = json.NewEncoder(w).Encode(err.Error())
@@ -16,7 +14,7 @@ func SendResponseStatus(w http.ResponseWriter, statusCode int, err error) {
 	}
 }
 
-func SendJsonData(w http.ResponseWriter, data any) error{
+func SendJsonData(w http.ResponseWriter, data any) error {
 	w.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(w).Encode(&data)
 	if err != nil {

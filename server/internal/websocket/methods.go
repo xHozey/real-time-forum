@@ -15,25 +15,23 @@ func (c *client) read() {
 			log.Println(err)
 			break
 		}
-		handleMessage(msg)
+		c.db.handleMsg(msg, c.id)
 	}
 }
 
-func handleMessage(message []byte) {
-	parts := bytes.SplitN(message, []byte(" "), 2)
+func (db *WSlayer) handleMsg(msg []byte, id int) {
+	parts := bytes.SplitN(msg, []byte(" "), 2)
 	if len(parts) != 2 {
 		return
 	}
-	userid, err := strconv.Atoi(string(parts[0]))
+	target, err := strconv.Atoi(string(parts[0]))
 	if err != nil {
 		return
 	}
-	sendMessage(userid, parts[1])
-}
-
-func sendMessage(userId int, message []byte) {
-	conn, exists := Clients[userId]
-	if exists {
-		conn.conn.WriteMessage(websocket.TextMessage, message)
+	message := append([]byte(strconv.Itoa(id)), ' ')
+	message = append(message, parts[1]...)
+	client, exist := Clients[target]
+	if exist {
+		client.conn.WriteMessage(websocket.TextMessage, message)
 	}
 }

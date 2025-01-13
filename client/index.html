@@ -1,50 +1,11 @@
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forum</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="app/styles/index.css">
+    <title>Document</title>
 </head>
-
 <body>
-    <div id="app"></div>
-    <script>
-        let socket = new WebSocket("ws://localhost:8080/ws")
-        socket.onopen = async () => {
-            try {
-                let res = await fetch("/api/info")
-                let info = await res.json()
-                let doc = document.getElementById('app')
-                info.forEach(element => {
-                    doc.innerHTML += `
-                    <span>${element.nickname}</span>
-                    <div id="">
-                        <div id="msg"></div>
-                        <input type="text" id="${element.user_id}-text">
-                         <button id="btn" onclick="send(${element.user_id})">send</button>
-                    </div>
-                    `
-                });
-            } catch(err) {
-                console.error(err)
-            }
-        }
-        const send = (id) => {
-            socket.send(id + " " + document.getElementById(id+"-text").value)
-        }
-        socket.onmessage = (event) => {
-            console.log("new message");
-            
-            document.getElementById("msg").innerHTML += `<p>${event.data}</p>`
-        }
-        socket.onclose = () => {
-            console.log("goodbye wrold");
-        }
-    </script>
+    <div id="container"></div>
+    <script src="./app/websocket.js"></script>
 </body>
-
 </html>

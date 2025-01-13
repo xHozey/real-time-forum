@@ -47,3 +47,9 @@ type InfoUser struct {
 	Nickname string `json:"nickname"`
 	Status   bool   `json:"status"`
 }
+
+type Message struct {
+	Sender string `json:"sender"`
+	Receiver string `json:"receiver"`
+	Message string `json:"message"`
+}
