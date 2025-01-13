@@ -46,7 +46,8 @@ func (db *DataLayer) GetUserBySession(token string) (int, string) {
 
 func (db *DataLayer) InsertSession(id int, token string, now time.Time) error {
 	db.DeleteSession(id)
-	_, err := db.DataDB.Exec("INSERT INTO session (user_id,token, expire_at, created_at) VALUES (?,?,?,?)", id, token, now.Add(time.Hour), now)
+	// reset sesion time to one hour after tests
+	_, err := db.DataDB.Exec("INSERT INTO session (user_id,token, expire_at, created_at) VALUES (?,?,?,?)", id, token, now.Add(time.Hour*6), now)
 	return err
 }
 
