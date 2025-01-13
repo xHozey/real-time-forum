@@ -8,12 +8,14 @@ import (
 	"forum/server/internal/utils"
 )
 
-func (db *ServiceLayer) ValidateLogin(user types.User) (int, bool) {
-	if err := utils.ValidateLength(user.Nickname); err != nil {
-		return 0, false
+func (db *ServiceLayer) ValidateLogin(user types.User) (int, error) {
+	if user.Nickname != "" {
+		if err := utils.ValidateLength(user.Nickname); err != nil {
+			return 0, err
+		}
 	}
 	if err := utils.ValidateLength(user.Password); err != nil {
-		return 0, false
+		return 0, err
 	}
 	id, hash := db.ServiceDB.MiddlewareData.GetUserPassword(user.Nickname)
 	return id, utils.ComparePass(user.Password, hash)
