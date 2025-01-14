@@ -1,16 +1,25 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
+	"forum/server/internal/types"
 	"forum/server/internal/utils"
 )
 
 func (db *HandlerLayer) InfoHandler(w http.ResponseWriter, r *http.Request) {
-	id, _ := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	id, nickname := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	if id == 0 {
+		return
+	}
 	users, err := db.HandlerDB.ServiceDB.MiddlewareData.GetAllUsers(id)
 	if err != nil {
+		fmt.Println(err)
 		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
+		return
 	}
-	utils.SendJsonData(w, &users)
+	data := types.InfoUser{UserId: id, Nickname: nickname, Clients: users}
+
+	utils.SendJsonData(w, &data)
 }

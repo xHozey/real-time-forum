@@ -13,189 +13,80 @@ body {
     background-attachment: fixed;
 }
 
-.login {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 1fr repeat(4, 100px) 1fr;
-    grid-template-rows: repeat(15, 100px);
-    grid-template-areas: ". . . . . href"
-        ". . . . . ."
-        ". . title title . ."
-        ". . . . . ."
-        ". . eu eu . ."
-        ". . pass pass . ."
-        ". . btn btn . ."
-        ". . . . . .";
-}
-
-
-
-.login h1,
-.register h1 {
-    font-size: 3.5rem;
-    grid-area: title;
-}
-
-.login-user {
-    grid-area: eu;
-}
-
-.login-password {
-    grid-area: pass;
-}
-
-.login input, .register input {
-    font-family:'Lucida Casual', 'Comic Sans MS';    
-    font-style: normal;
-    font-size: 1rem;
-    width: 100%;
-    height: 45%;
-    margin-left: 1rem;
-    border: solid 1px;
-    border-radius: 5px;
-    padding: 0.5rem;
-}
-
-
-
-.login .btn,
-.register .btn {
-
-    width: 50%;
-    height: 35%;
-    margin-left: 25%;
-    cursor: pointer;
-    grid-area: btn;
-    border: solid 2px;
-    border-radius: 10px;
-}
-
-/* .register .btn {
-    height: 45%;
-
-} */
-
-.login .btn:hover,
-.register .btn:hover {
-    color: rgb(79, 79, 126);
-}
-
-.login a,
-.register a {
-    grid-area: href;
-    text-decoration: none;
-    color: black;
-    text-align: end;
-    margin: 1.5rem;
-}
-
-.login a,
-.register a {
-    color: rgb(79, 79, 126);
-}
-
-.register {
-    display: grid;
-    text-align: center;
-    align-items: center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
     justify-content: center;
-    grid-template-columns: 1fr repeat(4, 100px) 1fr;
-    grid-template-rows: repeat(13, 70px);
-    grid-template-areas: ". . . . . href"
-        ". . title title . ."
-        ". . . . . ."
-        ". . user user . ."
-        ". . age age . ."
-        ". . gender gender . ."
-        ". . fn fn . ."
-        ". . ln ln . ."
-        ". . e e . ."
-        ". . p p . ."
-        ". . . . . ."
-        ". . btn btn . ."
-        ". . . . . .";
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-
-.login p, .register p {
-    text-align: left;
-    margin-bottom: 5px;
-}
-
-.register .container-user {
-    grid-area: user;
-}
-
-.register .container-age {
-    grid-area: age;
-}
-
-.register .container-gender {
-    grid-area: gender;
-}
-
-.register .container-fn {
-    grid-area: fn;
-}
-
-.register .container-ln {
-    grid-area: ln;
-}
-
-.register .container-e {
-    grid-area: e;
-}
-
-.register .container-p {
-    grid-area: p;
-}
-
-
-.btn {
-    text-align: center;
-  appearance: none;
-  background-color: #000000;
-  border: 2px solid #1A1A1A;
-  border-radius: 15px;
-  box-sizing: border-box;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  font-size: 16px;
-  font-weight: 600;
-  line-height: normal;
-  margin: 0;
-  min-height: 60px;
-  min-width: 0;
-  outline: none;
-  padding: 16px 24px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 100%;
-  will-change: transform;
-}
-
-.btn:disabled {
-  pointer-events: none;
-}
-
-.btn:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-  transform: translateY(-2px);
-}
-
-.btn:active {
-  box-shadow: none;
-  transform: translateY(0);
-}
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  
+  .chat-container {
+    display: flex;
+    flex-direction: row;
+    width: 800px;
+    height: 400px;
+  }
+  
+  .user-list {
+    width: 200px;
+    background-color: #fff;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .user-list .user {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .user-list .user.online {
+    background-color: #d4ffb7;
+  }
+  
+  .user-list .user.offline {
+    background-color: #ffb7b7;
+  }
+  
+  .chat-box {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .chat-box .messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+  
+  .chat-box input {
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  

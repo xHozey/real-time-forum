@@ -8,14 +8,14 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-func (c *client) read() {
+func (c *Client) read() {
 	for {
-		_, msg, err := c.conn.ReadMessage()
+		_, msg, err := c.Conn.ReadMessage()
 		if err != nil {
 			log.Println(err)
 			break
 		}
-		c.db.handleMsg(msg, c.id)
+		c.Db.handleMsg(msg, c.Id)
 	}
 }
 
@@ -28,10 +28,24 @@ func (db *WSlayer) handleMsg(msg []byte, id int) {
 	if err != nil {
 		return
 	}
+
 	message := append([]byte(strconv.Itoa(id)), ' ')
 	message = append(message, parts[1]...)
 	client, exist := Clients[target]
 	if exist {
-		client.conn.WriteMessage(websocket.TextMessage, message)
+		err := db.Data.InsertUserMessages(id, target, string(parts[1]))
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		client.Conn.WriteMessage(websocket.TextMessage, message)
+	}
+}
+
+func (c *Client) notify() {
+	for _, client := range Clients {
+		if client.Id != c.Id {
+			client.Conn.WriteJSON(&c)
+		}
 	}
 }

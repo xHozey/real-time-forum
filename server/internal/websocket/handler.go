@@ -17,13 +17,17 @@ func (db *WSlayer) WsHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		http.Error(w, "Upgrade fail", http.StatusUpgradeRequired)
 	}
-	client := &client{id: id, status: true, conn: conn}
+	db.Data.DataDB.Exec("UPDATE user_profile SET status = 1 WHERE id = ?", id)
+	client := &Client{Id: id, Status: true, Conn: conn, Db: *db}
 	mu.Lock()
 	Clients[id] = client
 	mu.Unlock()
+	client.notify()
 	client.read()
 	defer func() {
-		client.status = false
+		client.Status = false
+		client.notify()
+		db.Data.DataDB.Exec("UPDATE user_profile SET status = 0 WHERE id = ?", id)
 		conn.Close()
 	}()
 }

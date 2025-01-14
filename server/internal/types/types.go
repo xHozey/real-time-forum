@@ -42,14 +42,21 @@ type Reaction struct {
 	Reaction    int    `json:"reaction"`
 }
 
-type InfoUser struct {
+type Clients struct {
 	User_id  int    `json:"user_id"`
 	Nickname string `json:"nickname"`
 	Status   bool   `json:"status"`
 }
 
-type Message struct {
-	Sender string `json:"sender"`
-	Receiver string `json:"receiver"`
-	Message string `json:"message"`
+type InfoUser struct {
+	UserId   int
+	Nickname string
+	Clients  []Clients
+}
+
+type Messages struct {
+	Sender   int       `json:"sender"`
+	Receiver int       `json:"receiver"`
+	Content  string    `json:"content"`
+	Creation time.Time `json:"creation"`
 }

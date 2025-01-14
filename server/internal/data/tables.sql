@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS user_profile(
     firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
     age INTEGER NOT NULL,
+    status INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 CREATE TABLE IF NOT EXISTS session(

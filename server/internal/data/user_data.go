@@ -71,15 +71,15 @@ func (db *DataLayer) GetUserByName(nickname string) int {
 	return id
 }
 
-func (db *DataLayer) GetAllUsers(id int) ([]types.InfoUser, error) {
-	users := []types.InfoUser{}
-	rows, err := db.DataDB.Query("SELECT id, nickname FROM user_profile WHERE id != ?", id)
+func (db *DataLayer) GetAllUsers(id int) ([]types.Clients, error) {
+	users := []types.Clients{}
+	rows, err := db.DataDB.Query("SELECT id, nickname, status FROM user_profile WHERE id != ?", id)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		user := types.InfoUser{}
-		rows.Scan(&user.User_id, &user.Nickname)
+		user := types.Clients{}
+		rows.Scan(&user.User_id, &user.Nickname, &user.Status)
 		users = append(users, user)
 	}
 	return users, nil
