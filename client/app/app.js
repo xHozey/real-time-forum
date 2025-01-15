@@ -1,37 +1,36 @@
-import { register } from "./components/features/register_component.js";
-import { login } from "./components/features/login_component.js";
-const appView = document.getElementById("app");
-
-const handleRouteChanges = () => {
-  let viewComponent = null;
-  const path = window.location.pathname;
-  switch (path) {
-    case "/":
-      break;
-    case "/login":
-      viewComponent = new login();
-      break;
-    case "/register":
-      viewComponent = new register();
-      break;
-  }
-  if (viewComponent) {
-    appView.innerHTML = "";
-    appView.append(viewComponent);
-  }
-};
+import { login, register } from "./templates/auth.js";
+import { registerSendData, loginSendData } from "./api/auth.js";
+import { main } from "./templates/main.js";
+const app = document.getElementById("app");
 
 const route = (event) => {
-  event = event || window.event
+  event = event || window.event;
   event.preventDefault();
   window.history.pushState({}, "", event.target.href);
-  handleRouteChanges();
+  handleLocation();
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelector(".href").addEventListener("click", route);
-});
+export const handleLocation = async () => {
+  const path = window.location.pathname;
+  switch (path) {
+    case "/register":
+      app.innerHTML = register;
+      registerSendData();
+      break;
+    case "/login":
+      app.innerHTML = login;
+      loginSendData();
+      break;
+    case "/":
+      app.innerHTML = main;
+      break;
+    default:
+      app.innerHTML = "<h1>in progress</h1>";
+      break;
+  }
+};
 
-window.onpopstate = handleRouteChanges;
+window.onpopstate = handleLocation;
 window.route = route;
-handleRouteChanges();
+
+handleLocation();

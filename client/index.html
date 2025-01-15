@@ -2,18 +2,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./app/styles/index.css">
+    <link rel="stylesheet" href="./app/index.css">
     <title>Document</title>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="user-list" id="userList"></div>
-        <div class="chat-box">
-          <div class="messages" id="messages"></div>
-          <input type="text" id="messageInput" placeholder="Type a message..." />
-          <button id="sendMessageBtn">Send</button>
-        </div>
-      </div>
-    <script src="./app/websocket.js"></script>
+    <div id="app"></div>
+    <script type="module" src="./app/app.js"></script>
 </body>
 </html>

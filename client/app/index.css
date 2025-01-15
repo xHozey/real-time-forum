@@ -1,0 +1,252 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #36393f;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* Shared Styles for Login and Register Boxes */
+.login-box,
+.register-box {
+    background-color: #2f3136;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.login-box h1,
+.register-box h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.login-box p,
+.register-box p {
+    font-size: 14px;
+    color: #b9bbbe;
+    margin-bottom: 20px;
+}
+
+.login-box .loginForm,
+.register-box .registerForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-box label,
+.register-box label {
+    font-size: 12px;
+    color: #b9bbbe;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.login-box input,
+.register-box input,
+.register-box select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #202225;
+    border-radius: 4px;
+    background-color: #202225;
+    color: #fff;
+    font-size: 14px;
+}
+
+.login-box input:focus,
+.register-box input:focus,
+.register-box select:focus {
+    border-color: #7289da;
+    outline: none;
+}
+
+.login-box button,
+.register-box button {
+    padding: 10px;
+    background-color: #7289da;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.login-box button:hover,
+.register-box button:hover {
+    background-color: #677bc4;
+}
+
+.login-link,
+.register-link {
+    font-size: 12px;
+    color: #b9bbbe;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.login-link a,
+.register-link a {
+    color: #7289da;
+    text-decoration: none;
+}
+
+.login-link a:hover,
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.error {
+    border: 1px solid red !important;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.sidebar {
+    width: 240px;
+    background-color: #202225;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 16px;
+    border-bottom: 1px solid #2f3136;
+}
+
+.sidebar-header h2 {
+    font-size: 16px;
+    color: #b9bbbe;
+}
+
+.server-list {
+    flex: 1;
+    padding: 8px;
+}
+
+.server-item {
+    padding: 8px;
+    margin: 4px 0;
+    background-color: #36393f;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #b9bbbe;
+    text-align: center;
+}
+
+.server-item:hover {
+    background-color: #40444b;
+}
+
+.sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid #2f3136;
+    text-align: center;
+}
+
+.add-server-btn {
+    background-color: #7289da;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.add-server-btn:hover {
+    background-color: #677bc4;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #36393f;
+}
+
+.posts-header {
+    padding: 16px;
+    border-bottom: 1px solid #2f3136;
+}
+
+.posts-header h2 {
+    font-size: 16px;
+    color: #fff;
+}
+
+.posts-container {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.post {
+    margin-bottom: 16px;
+}
+
+.post-author {
+    font-weight: bold;
+    color: #7289da;
+    margin-bottom: 4px;
+}
+
+.post-content {
+    color: #dcddde;
+}
+
+.post-input {
+    padding: 16px;
+    border-top: 1px solid #2f3136;
+    display: flex;
+    gap: 8px;
+}
+
+.post-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #202225;
+    border-radius: 4px;
+    background-color: #40444b;
+    color: #fff;
+    font-size: 14px;
+}
+
+.post-input input:focus {
+    outline: none;
+    border-color: #7289da;
+}
+
+.post-input button {
+    padding: 8px 16px;
+    background-color: #7289da;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.post-input button:hover {
+    background-color: #677bc4;
+}

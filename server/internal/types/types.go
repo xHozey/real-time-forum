@@ -55,8 +55,8 @@ type InfoUser struct {
 }
 
 type Messages struct {
-	Sender   int       `json:"sender"`
-	Receiver int       `json:"receiver"`
+	Sender   string       `json:"sender"`
+	Receiver string       `json:"receiver"`
 	Content  string    `json:"content"`
 	Creation time.Time `json:"creation"`
 }

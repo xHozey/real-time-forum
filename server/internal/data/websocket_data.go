@@ -18,7 +18,10 @@ func (db *DataLayer) GetConverceation(source, target int) ([]types.Messages, err
 	messages := []types.Messages{}
 	for rows.Next() {
 		message := types.Messages{}
-		rows.Scan(&message.Sender, &message.Receiver, &message.Content, &message.Creation)
+		var sender int
+		var receiver int
+		rows.Scan(&sender, &receiver, &message.Content, &message.Creation)
+		
 		messages = append(messages, message)
 	}
 	return messages, nil

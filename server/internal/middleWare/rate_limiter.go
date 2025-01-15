@@ -1,10 +1,12 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
 	"time"
 
 	"forum/server/internal/data"
+	"forum/server/internal/utils"
 )
 
 type MiddleWareLayer struct {
@@ -25,7 +27,7 @@ func (db *MiddleWareLayer) RateLimiter(next http.Handler, maxTokens int, refillT
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		db.MiddlewareData.GiveBucket(r.RemoteAddr, maxTokens, refillTime, r.URL.Path)
 		if !db.Allow(r.RemoteAddr) {
-			http.Error(w, "Too many request", http.StatusTooManyRequests)
+			utils.SendResponseStatus(w, http.StatusTooManyRequests, errors.New("too many requests"))
 			return
 		}
 		next.ServeHTTP(w, r)

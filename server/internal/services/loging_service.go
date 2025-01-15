@@ -17,6 +17,7 @@ func (db *ServiceLayer) ValidateLogin(user types.User) (int, error) {
 	if err := utils.ValidateLength(user.Password); err != nil {
 		return 0, err
 	}
+
 	id, hash := db.ServiceDB.MiddlewareData.GetUserPassword(user.Nickname)
 	return id, utils.ComparePass(user.Password, hash)
 }
