@@ -71,6 +71,12 @@ func (db *DataLayer) GetUserByName(nickname string) int {
 	return id
 }
 
+func (db *DataLayer) GetUserNameById(id int) string {
+	var nickname string
+	db.DataDB.QueryRow("SELECT nickname FROM user_profile WHERE id = ?", id).Scan(&nickname)
+	return nickname
+}
+
 func (db *DataLayer) GetAllUsers(id int) ([]types.Clients, error) {
 	users := []types.Clients{}
 	rows, err := db.DataDB.Query("SELECT id, nickname, status FROM user_profile WHERE id != ?", id)

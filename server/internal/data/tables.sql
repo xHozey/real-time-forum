@@ -84,3 +84,6 @@ INSERT
 VALUES ('tech'),
     ('sports'),
     ('games');
+
+UPDATE user_profile
+SET status = 0;

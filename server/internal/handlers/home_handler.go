@@ -18,7 +18,7 @@ func (db *HandlerLayer) HomeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/" {
 		id, _ := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
 		if id == 0 {
-			http.Redirect(w, r, "/register", http.StatusSeeOther)
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 		}
 	}
 	tpl.Execute(w, nil)

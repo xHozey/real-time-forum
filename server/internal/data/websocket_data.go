@@ -21,7 +21,8 @@ func (db *DataLayer) GetConverceation(source, target int) ([]types.Messages, err
 		var sender int
 		var receiver int
 		rows.Scan(&sender, &receiver, &message.Content, &message.Creation)
-		
+		message.Sender = db.GetUserNameById(sender)
+		message.Receiver = db.GetUserNameById(receiver)
 		messages = append(messages, message)
 	}
 	return messages, nil
