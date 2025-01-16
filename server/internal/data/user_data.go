@@ -79,7 +79,7 @@ func (db *DataLayer) GetAllUsers(id int) ([]types.Clients, error) {
 	}
 	for rows.Next() {
 		user := types.Clients{}
-		rows.Scan(&user.User_id, &user.Nickname, &user.Status)
+		rows.Scan(&user.UserId, &user.Nickname, &user.Status)
 		users = append(users, user)
 	}
 	return users, nil

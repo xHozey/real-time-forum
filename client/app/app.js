@@ -1,6 +1,7 @@
 import { login, register } from "./templates/auth.js";
 import { registerSendData, loginSendData } from "./api/auth.js";
 import { main } from "./templates/main.js";
+import { getUsers } from "./api/users.js";
 const app = document.getElementById("app");
 
 const route = (event) => {
@@ -23,6 +24,7 @@ export const handleLocation = async () => {
       break;
     case "/":
       app.innerHTML = main;
+      getUsers()
       break;
     default:
       app.innerHTML = "<h1>in progress</h1>";

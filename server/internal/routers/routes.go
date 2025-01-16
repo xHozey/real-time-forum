@@ -17,7 +17,7 @@ func Routes(db *sql.DB) *http.ServeMux {
 	mux := http.NewServeMux()
 	fs := http.FileServer(http.Dir("../client/app"))
 	mux.Handle("/app/", http.StripPrefix("/app/", fs))
-	mux.HandleFunc("/", handlers.HomeHandler)
+	mux.HandleFunc("/", dbLayers.HomeHandler)
 	mux.HandleFunc("/ws", wsLayer.WsHandler)
 	mux.Handle("GET /api/client/{id}", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.ClientHandler), 3, time.Second*30))
 	mux.Handle("POST /api/login", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.LoginHandler), 3, time.Second*30))

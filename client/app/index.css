@@ -22,7 +22,7 @@ body {
 }
 
 /* Shared Styles for Login and Register Boxes */
-.login-box,
+z .login-box,
 .register-box {
     background-color: #2f3136;
     padding: 20px;
@@ -138,12 +138,12 @@ body {
     color: #b9bbbe;
 }
 
-.server-list {
+.users-list {
     flex: 1;
     padding: 8px;
 }
 
-.server-item {
+.user-item {
     padding: 8px;
     margin: 4px 0;
     background-color: #36393f;
@@ -153,29 +153,8 @@ body {
     text-align: center;
 }
 
-.server-item:hover {
+.user-item:hover {
     background-color: #40444b;
-}
-
-.sidebar-footer {
-    padding: 16px;
-    border-top: 1px solid #2f3136;
-    text-align: center;
-}
-
-.add-server-btn {
-    background-color: #7289da;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.add-server-btn:hover {
-    background-color: #677bc4;
 }
 
 /* Main Content */
@@ -186,44 +165,44 @@ body {
     background-color: #36393f;
 }
 
-.posts-header {
+.messages-header {
     padding: 16px;
     border-bottom: 1px solid #2f3136;
 }
 
-.posts-header h2 {
+.messages-header h2 {
     font-size: 16px;
     color: #fff;
 }
 
-.posts-container {
+.messages-container {
     flex: 1;
     padding: 16px;
     overflow-y: auto;
 }
 
-.post {
+.message {
     margin-bottom: 16px;
 }
 
-.post-author {
+.message-author {
     font-weight: bold;
     color: #7289da;
     margin-bottom: 4px;
 }
 
-.post-content {
+.message-content {
     color: #dcddde;
 }
 
-.post-input {
+.message-input {
     padding: 16px;
     border-top: 1px solid #2f3136;
     display: flex;
     gap: 8px;
 }
 
-.post-input input {
+.message-input input {
     flex: 1;
     padding: 8px;
     border: 1px solid #202225;
@@ -233,12 +212,12 @@ body {
     font-size: 14px;
 }
 
-.post-input input:focus {
+.message-input input:focus {
     outline: none;
     border-color: #7289da;
 }
 
-.post-input button {
+.message-input button {
     padding: 8px 16px;
     background-color: #7289da;
     border: none;
@@ -247,6 +226,24 @@ body {
     cursor: pointer;
 }
 
-.post-input button:hover {
+.message-input button:hover {
     background-color: #677bc4;
+}
+
+.online {
+    height: 5px;
+    width: 5px;
+    display: flex;
+    background-color: green;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.offline {
+    height: 5px;
+    width: 5px;
+    display: flex;
+    background-color: red;
+    padding: 5px;
+    border-radius: 15px;
 }

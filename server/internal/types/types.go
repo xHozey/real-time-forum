@@ -43,14 +43,14 @@ type Reaction struct {
 }
 
 type Clients struct {
-	User_id  int    `json:"user_id"`
+	UserId  int    `json:"user_id"`
 	Nickname string `json:"nickname"`
 	Status   bool   `json:"status"`
 }
 
 type InfoUser struct {
-	UserId   int
-	Nickname string
+	UserId   int 
+	Nickname string 
 	Clients  []Clients
 }
 
