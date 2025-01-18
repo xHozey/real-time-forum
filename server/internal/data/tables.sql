@@ -87,3 +87,4 @@ VALUES ('tech'),
 
 UPDATE user_profile
 SET status = 0;
+DELETE FROM token_bucket;

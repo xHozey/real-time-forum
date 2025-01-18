@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -14,8 +15,15 @@ func (db *HandlerLayer) ClientHandler(w http.ResponseWriter, r *http.Request) {
 		utils.SendResponseStatus(w, http.StatusNotFound, err)
 		return
 	}
-	messages, err := db.HandlerDB.ServiceDB.MiddlewareData.GetConverceation(source, target)
+	query := r.URL.Query().Get("offset")
+	offset, err := strconv.Atoi(query)
 	if err != nil {
+		utils.SendResponseStatus(w, http.StatusNotFound, err)
+		return
+	}
+	messages, err := db.HandlerDB.ServiceDB.MiddlewareData.GetConverceation(source, target, offset)
+	if err != nil {
+		fmt.Println(err)
 		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
 		return
 	}

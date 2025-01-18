@@ -16,8 +16,8 @@ func (db *DataLayer) RefillTokens(tokensToAdd int, ip string) {
 	db.DataDB.Exec("UPDATE token_bucket SET tokens = MIN(?, maxTokens), lastRefill = ? WHERE ip = ?", tokensToAdd, time.Now(), ip)
 }
 
-func (db *DataLayer) ExtractBucketDate(ip string) (time.Duration, time.Time) {
-	var refill time.Duration
+func (db *DataLayer) ExtractBucketDate(ip string) (int, time.Time) {
+	var refill int
 	var lastRefill time.Time
 	db.DataDB.QueryRow("SELECT refill, lastRefill FROM token_bucket WHERE ip = ?", ip).Scan(&refill, &lastRefill)
 	return refill, lastRefill

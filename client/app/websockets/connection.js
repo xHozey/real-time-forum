@@ -18,12 +18,16 @@ export const connectToServer = () => {
       }
     } catch (err) {
       let message = event.data.split(/ (.+)/);
+      const targetDiv = document.getElementById(message[0])
       if (targetId == message[0]) {
         sendMessage(
           message[1],
-          document.getElementById(targetId).dataset.nickname
+          targetDiv.dataset.nickname
         );
+      } else {
+        targetDiv.classList.add("new-message")
       }
+      document.querySelector(".users-list").prepend(targetDiv)
     }
   };
 

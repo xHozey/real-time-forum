@@ -10,7 +10,7 @@ export const main = `<div class="app-container">
     <div class="main-content">
         <div id="messages-display" class="hidden">
             <div class="message-header">
-                <h2 id="user-nickname"></h2>
+            <h2 id="user-nickname"></h2>
             </div>
             <div class="messages-container">
             </div>
@@ -20,5 +20,6 @@ export const main = `<div class="app-container">
             </div>
         </div>
     </div>
+    <div id="posts"></div>
 </div>
 `;

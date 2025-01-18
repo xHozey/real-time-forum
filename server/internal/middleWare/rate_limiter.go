@@ -16,7 +16,7 @@ type MiddleWareLayer struct {
 func (db *MiddleWareLayer) Allow(ip string) bool {
 	now := time.Now()
 	refill, lastRefill := db.MiddlewareData.ExtractBucketDate(ip)
-	tokensToAdd := int(now.Sub(lastRefill) / refill)
+	tokensToAdd := int(now.Sub(lastRefill) / (time.Second*time.Duration(refill)))
 	if tokensToAdd > 0 {
 		db.MiddlewareData.RefillTokens(tokensToAdd, ip)
 	}

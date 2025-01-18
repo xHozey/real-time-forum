@@ -4,7 +4,10 @@ import (
 	"time"
 )
 
-const CookieName = "session_cookie"
+const (
+	CookieName = "session_cookie"
+	Limit      = 10
+)
 
 type User struct {
 	Nickname  string `json:"nickname"`
@@ -43,20 +46,25 @@ type Reaction struct {
 }
 
 type Clients struct {
-	UserId  int    `json:"user_id"`
+	UserId   int    `json:"user_id"`
 	Nickname string `json:"nickname"`
 	Status   bool   `json:"status"`
 }
 
 type InfoUser struct {
-	UserId   int 
-	Nickname string 
+	UserId   int
+	Nickname string
 	Clients  []Clients
 }
 
 type Messages struct {
-	Sender   string       `json:"sender"`
-	Receiver string       `json:"receiver"`
+	Sender   string    `json:"sender"`
+	Receiver string    `json:"receiver"`
 	Content  string    `json:"content"`
 	Creation time.Time `json:"creation"`
+}
+
+type Scroll struct {
+	Limit  int `json:"limit"`
+	OffSet int `json:"offset"`
 }

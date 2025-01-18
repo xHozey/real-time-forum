@@ -1,1 +1,0 @@
-INSERT INTO user_profile (nickname, firstname, lastname)

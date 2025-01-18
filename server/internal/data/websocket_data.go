@@ -7,11 +7,11 @@ func (db *DataLayer) InsertUserMessages(sender int, receiver int, message string
 	return err
 }
 
-func (db *DataLayer) GetConverceation(source, target int) ([]types.Messages, error) {
+func (db *DataLayer) GetConverceation(source, target, offset int) ([]types.Messages, error) {
 	rows, err := db.DataDB.Query(`SELECT sender, receiver, content, created_at 
 	          FROM message 
 	          WHERE (sender = ? AND receiver = ?) OR (sender = ? AND receiver = ?) 
-	          ORDER BY created_at ASC`, source, target, target, source)
+	          ORDER BY created_at DESC LIMIT ? OFFSET ?`, source, target, target, source, types.Limit, offset)
 	if err != nil {
 		return nil, err
 	}
