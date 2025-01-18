@@ -1,31 +1,24 @@
-import { prepandMessage } from "../utils/helpers.js";
+import { prepandMessage, createUser } from "../utils/helpers.js";
 export let myNickname;
 export let myId;
 export let targetId;
 const limit = 10;
 let messages = [];
 export const getUsers = async () => {
-  const usersList = document.querySelector(".users-list");
   try {
     let res = await fetch("/api/info");
     let data = await res.json();
     myNickname = data.Nickname;
     myId = data.UserId;
     data.Clients.forEach((user) => {
-      const div = document.createElement("div");
-      div.classList.add("user-item");
-      div.id = user.user_id;
-      div.setAttribute("onclick", `target(${user.user_id})`);
-      div.setAttribute("data-nickname", `${user.nickname}`);
-      div.innerHTML = `${user.nickname} <span id="status-${
-        user.user_id
-      }" class="${user.status ? "online" : "offline"}"></span>`;
-      usersList.append(div);
+      createUser(user)
     });
   } catch (err) {
     console.error(err);
   }
 };
+
+
 
 const target = async (id) => {
   let display = document.getElementById("messages-display");
@@ -34,6 +27,7 @@ const target = async (id) => {
     display.classList.add("hidden");
     return;
   }
+  document.getElementById("message").classList.remove("error")
   let targetDiv = document.getElementById(id);
   targetDiv.classList.remove("new-message");
   let messagesContainer = document.querySelector(".messages-container");

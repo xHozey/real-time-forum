@@ -37,3 +37,16 @@ export const prepandMessage = (message, name) => {
   div.append(content);
   messagesContainer.prepend(div);
 };
+
+export const createUser = (user) => {
+  const usersList = document.querySelector(".users-list");
+  const div = document.createElement("div");
+  div.classList.add("user-item");
+  div.id = user.id;
+  div.setAttribute("onclick", `target(${user.id})`);
+  div.setAttribute("data-nickname", `${user.nickname}`);
+  div.innerHTML = `${user.nickname} <span id="status-${
+    user.id
+  }" class="${user.status ? "online" : "offline"}"></span>`;
+  usersList.append(div);
+}

@@ -25,6 +25,7 @@ var (
 type Client struct {
 	SocketType string `json:"type"`
 	Id     int `json:"id"`
+	Nickname string `json:"nickname"`
 	Conn   *websocket.Conn
 	Status bool `json:"status"`
 	Db     WSlayer

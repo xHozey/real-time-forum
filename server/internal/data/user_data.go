@@ -79,7 +79,35 @@ func (db *DataLayer) GetUserNameById(id int) string {
 
 func (db *DataLayer) GetAllUsers(id int) ([]types.Clients, error) {
 	users := []types.Clients{}
-	rows, err := db.DataDB.Query(``, id)
+	rows, err := db.DataDB.Query(`WITH LatestMessage AS (
+    SELECT
+        sender AS user_id,
+        created_at,
+        ROW_NUMBER() OVER (PARTITION BY sender ORDER BY created_at DESC) AS rn
+    FROM message
+	WHERE receiver = ?
+)
+SELECT
+    up.id,
+    up.nickname,
+    status
+FROM
+    user_profile up
+LEFT JOIN (
+    SELECT
+        user_id,
+        created_at
+    FROM LatestMessage
+    WHERE rn = 1
+) lm ON up.id = lm.user_id
+ WHERE id != ?
+ORDER BY
+    CASE
+        WHEN lm.created_at IS NULL THEN 1
+        ELSE 0
+    END,
+    lm.created_at DESC,
+    up.nickname`, id, id)
 	if err != nil {
 		return nil, err
 	}

@@ -37,7 +37,7 @@ export const handleLocation = async () => {
           const container = document.querySelector(".messages-container");
           clearTimeout(timer);
           if (container.scrollTop == 0) {
-            timer = setTimeout(() => {              
+            timer = setTimeout(() => {
               loadMessages(container, targetId);
             }, 1000);
           }

@@ -52,7 +52,7 @@ type Reaction struct {
 }
 
 type Clients struct {
-	UserId   int    `json:"user_id"`
+	UserId   int    `json:"id"`
 	Nickname string `json:"nickname"`
 	Status   bool   `json:"status"`
 }
