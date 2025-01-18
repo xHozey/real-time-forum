@@ -21,22 +21,28 @@ type User struct {
 
 type Post struct {
 	Id           int       `json:"id"`
+	Author       string    `json:"author"`
 	UserId       int       `json:"user_id"`
 	Content      string    `json:"content"`
 	Categories   []string  `json:"categories"`
 	Likes        int       `json:"likes"`
 	Dislikes     int       `json:"dislikes"`
 	CreationDate time.Time `json:"creation_date"`
+	IsLiked      bool      `json:"isliked"`
+	IsDisliked   bool      `json:"isdisliked"`
 }
 
 type Comment struct {
 	Id           int       `json:"id"`
+	Author       string    `json:"author"`
 	PostId       int       `json:"post_id"`
 	UserId       int       `json:"user_id"`
 	Content      string    `json:"content"`
 	Likes        int       `json:"likes"`
 	Dislikes     int       `json:"dislikes"`
 	CreationDate time.Time `json:"creation_date"`
+	IsLiked      bool      `json:"isliked"`
+	IsDisliked   bool      `json:"isdisliked"`
 }
 
 type Reaction struct {

@@ -28,6 +28,8 @@ func (db *DataLayer) GetComments(post_id int) ([]types.Comment, error) {
 	for rows.Next() {
 		comment := types.Comment{}
 		rows.Scan(&comment.Id, &comment.UserId, &comment.PostId, &comment.Content, &comment.CreationDate, &comment.Likes, &comment.Dislikes)
+		comment.Author = db.GetUserNameById(comment.UserId)
+		comment.IsLiked, comment.IsDisliked = db.CheckIfLikedComment(comment.Id, comment.UserId)
 		comments = append(comments, comment)
 	}
 	return comments, nil

@@ -63,7 +63,7 @@ export const loadMessages = async (container, id) => {
   } finally {
     container.scroll(
       0,
-      document.querySelector(".message").scrollHeight * limit
+      85 * limit
     );
   }
 };
