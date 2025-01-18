@@ -89,7 +89,7 @@ func (db *DataLayer) GetAllUsers(id int) ([]types.Clients, error) {
 SELECT
     up.id,
     up.nickname,
-    lm.created_at AS last_message_time
+	up.status
 FROM
     user_profile up
 LEFT JOIN (

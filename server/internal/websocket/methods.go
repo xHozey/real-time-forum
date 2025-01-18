@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"log"
 	"strconv"
-
-	"github.com/gorilla/websocket"
 )
 
 func (c *Client) read() {
@@ -29,8 +27,7 @@ func (db *WSlayer) handleMsg(msg []byte, id int) {
 		return
 	}
 
-	message := append([]byte(strconv.Itoa(id)), ' ')
-	message = append(message, parts[1]...)
+	message := Message{SocketType: "chat", Sender: id, Content: string(parts[1])}
 	client, exist := Clients[target]
 	if exist {
 		err := db.Data.InsertUserMessages(id, target, string(parts[1]))
@@ -38,13 +35,14 @@ func (db *WSlayer) handleMsg(msg []byte, id int) {
 			log.Println(err)
 			return
 		}
-		client.Conn.WriteMessage(websocket.TextMessage, message)
+		client.Conn.WriteJSON(&message)
 	}
 }
 
 func (c *Client) notify() {
 	for _, client := range Clients {
 		if client.Id != c.Id {
+			c.SocketType = "status"
 			client.Conn.WriteJSON(&c)
 		}
 	}
