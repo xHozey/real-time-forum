@@ -46,30 +46,16 @@ func (db *DataLayer) InsertReactComment(user_id, post_id, like_type int) error {
 	return err
 }
 
-func (db *DataLayer) CheckIfLikedPost(post_id, user_id int) (bool, bool) {
+func (db *DataLayer) CheckIfLikedPost(post_id, user_id int) int {
 	isLiked := 0
 	db.DataDB.QueryRow("SELECT type FROM post_react WHERE post_id = ? AND user_id = ?", post_id, user_id).Scan(&isLiked)
-	switch isLiked {
-	case -1:
-		return false, true
-	case 1:
-		return true, false
-	default:
-		return false, false
-	}
+	return isLiked
 }
 
-func (db *DataLayer) CheckIfLikedComment(post_id, user_id int) (bool, bool) {
+func (db *DataLayer) CheckIfLikedComment(post_id, user_id int) int {
 	isLiked := 0
 	db.DataDB.QueryRow("SELECT type FROM comment_react WHERE comment_id = ? AND user_id = ?", post_id, user_id).Scan(&isLiked)
-	switch isLiked {
-	case -1:
-		return false, true
-	case 1:
-		return true, false
-	default:
-		return false, false
-	}
+	return isLiked
 }
 
 func (db *DataLayer) CheckIfThreadExists(react types.Reaction) bool {

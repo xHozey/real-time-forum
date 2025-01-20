@@ -28,8 +28,7 @@ type Post struct {
 	Likes        int       `json:"likes"`
 	Dislikes     int       `json:"dislikes"`
 	CreationDate time.Time `json:"creation_date"`
-	IsLiked      bool      `json:"isliked"`
-	IsDisliked   bool      `json:"isdisliked"`
+	IsLiked      int      `json:"isliked"`
 }
 
 type Comment struct {
@@ -41,8 +40,7 @@ type Comment struct {
 	Likes        int       `json:"likes"`
 	Dislikes     int       `json:"dislikes"`
 	CreationDate time.Time `json:"creation_date"`
-	IsLiked      bool      `json:"isliked"`
-	IsDisliked   bool      `json:"isdisliked"`
+	IsLiked      int      `json:"isliked"`
 }
 
 type Reaction struct {

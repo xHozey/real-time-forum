@@ -51,7 +51,7 @@ func (db *DataLayer) GetAllPosts() ([]types.Post, error) {
 		post := types.Post{}
 		rows.Scan(&post.Id, &post.UserId, &post.Content, &post.CreationDate, &post.Likes, &post.Dislikes)
 		post.Author = db.GetUserNameById(post.Id)
-		post.IsLiked, post.IsDisliked = db.CheckIfLikedPost(post.Id, post.UserId)
+		post.IsLiked = db.CheckIfLikedPost(post.Id, post.UserId)
 		rows, err := db.DataDB.Query("SELECT category_name FROM category c LEFT JOIN post_category p ON c.id = p.category_id WHERE p.post_id = ?", post.Id)
 		if err != nil {
 			return []types.Post{}, err
