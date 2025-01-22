@@ -20,5 +20,5 @@ func main() {
 		Addr:    ":8080",
 		Handler: routes.Routes(db),
 	}
-	config.ListenAndServe()
+	log.Fatal(config.ListenAndServe())
 }

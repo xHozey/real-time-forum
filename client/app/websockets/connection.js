@@ -17,7 +17,6 @@ export const connectToServer = () => {
 
       case "status":
         let div = document.getElementById(`status-${res.id}`);
-        console.log(res);
 
         if (div) {
           div.classList.remove("offline", "online");
@@ -34,17 +33,30 @@ export const connectToServer = () => {
     }
   };
 
+  conn.onclose = (event) => {
+    console.log("WebSocket connection closed:", event.reason);
+  };
+  conn.onerror = (event) => {
+    console.error("WebSocket error:", error);
+  };
+
   document.getElementById("btn-message").addEventListener("click", () => {
     let message = document.getElementById("message");
+    if (conn.readyState != WebSocket.OPEN) {
+      console.error("WebSocket is closed");
+      return;
+    }
     if (
-      document.getElementById(`status-`+ targetId).classList.contains("offline")
+      document
+        .getElementById(`status-` + targetId)
+        .classList.contains("offline")
     ) {
-      message.classList.add("error")
+      message.classList.add("error");
       setTimeout(() => {
-        message.classList.remove("error")
-      },1000)
+        message.classList.remove("error");
+      }, 1000);
     } else {
-      message.classList.remove("error")
+      message.classList.remove("error");
       sendMessage(message.value, myNickname);
       document
         .querySelector(".users-list")

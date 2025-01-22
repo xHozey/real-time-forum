@@ -23,7 +23,7 @@ body {
     left: 0;
     top: 0;
     bottom: 0;
-    z-index: 1000;
+    z-index: 3;
 }
 
 .sidebar-header {
@@ -73,6 +73,7 @@ body {
     width: calc(100% - 240px);
     position: relative;
     padding-bottom: 72px;
+    z-index: 1;
 }
 
 #messages-display {

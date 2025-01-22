@@ -1,6 +1,8 @@
 package data
 
-import "forum/server/internal/types"
+import (
+	"forum/server/internal/types"
+)
 
 func (db *DataLayer) CheckPostReaction(user_id, post_id int) (bool, error) {
 	var exists bool

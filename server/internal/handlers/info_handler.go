@@ -11,6 +11,7 @@ import (
 func (db *HandlerLayer) InfoHandler(w http.ResponseWriter, r *http.Request) {
 	id, nickname := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
 	if id == 0 {
+		utils.SendResponseStatus(w, http.StatusUnauthorized, types.ErrUnauthorized)
 		return
 	}
 	users, err := db.HandlerDB.ServiceDB.MiddlewareData.GetAllUsers(id)

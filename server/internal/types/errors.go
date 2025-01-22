@@ -19,4 +19,3 @@ var (
 	ErrNotExist             = errors.New("not exist")
 	ErrInvalidReaction      = errors.New("invalid reaction")
 )
-

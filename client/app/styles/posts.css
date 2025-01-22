@@ -1,0 +1,118 @@
+.post-container {
+    margin: 100px auto 16px; 
+    max-width: 500px; 
+    position: relative; 
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}   
+
+.post {
+    background-color: #2b2d31; 
+    border-radius: 8px; 
+    padding: 16px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);  
+    margin: 10px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px; 
+}
+
+.profile-img {
+    width: 40px; 
+    height: 40px;
+    border-radius: 50%; 
+    background-color: #7289da; 
+    margin-right: 12px; 
+}
+
+.username {
+    font-size: 16px;
+    font-weight: 500;
+    color: #f2f3f5; 
+    margin-right: 8px; 
+}
+
+.post-time {
+    font-size: 12px;
+    color: #949ba4; 
+}
+
+.post-text {
+    font-size: 14px;
+    color: #dbdee1;
+    line-height: 1.5; 
+    margin-bottom: 12px;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px; 
+}
+
+.actionIcon {
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.not-liked {
+    background-image: url(../icons/like.svg);
+    background-size: cover;
+}
+
+.not-disliked{
+    background-image: url(../icons/dislike.svg);
+    background-size: cover;
+}
+
+.liked {
+    background-image: url(../icons/solid_like.svg);
+    background-size: cover;
+}
+
+.disliked {
+    background-image: url(../icons/solid_dislike.svg);
+    background-size: cover;
+}
+
+.comment {
+    background-image: url(../icons/comment.svg);
+    background-size: cover;
+}
+
+/* Categories Container */
+.categories {
+    display: flex;
+    flex-wrap: wrap; /* Allow categories to wrap to the next line */
+    gap: 8px; /* Space between categories */
+    margin-bottom: 12px; /* Space below categories */
+}
+
+/* Individual Category */
+.post-categorie {
+    background-color: #7289da; /* Discord-like blue background */
+    color: #fff; /* White text */
+    font-size: 12px; /* Small font size */
+    padding: 4px 8px; /* Padding inside the category */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.2s ease; /* Smooth hover effect */
+}
+
+/* Hover Effect */
+.post-categorie:hover {
+    background-color: #677bc4; /* Slightly darker blue on hover */
+}
+
+.nbr {
+    font-size: 14px;
+    color: #949ba4;
+    margin-left: 4px;
+}

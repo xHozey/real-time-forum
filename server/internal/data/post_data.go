@@ -36,14 +36,14 @@ func (db *DataLayer) GetCategorieId(categorie string) int {
 	return id
 }
 
-func (db *DataLayer) GetAllPosts() ([]types.Post, error) {
+func (db *DataLayer) GetAllPosts(userId int) ([]types.Post, error) {
 	posts := []types.Post{}
 	rows, err := db.DataDB.Query(`
     SELECT 
         p.*,
         (SELECT COUNT(*) FROM post_react WHERE post_id = p.id AND type = 1) AS likes,
         (SELECT COUNT(*) FROM post_react WHERE post_id = p.id AND type = -1) AS dislikes
-    FROM post p`)
+    FROM post p ORDER BY p.created_at DESC`)
 	if err != nil {
 		return []types.Post{}, err
 	}
@@ -51,7 +51,7 @@ func (db *DataLayer) GetAllPosts() ([]types.Post, error) {
 		post := types.Post{}
 		rows.Scan(&post.Id, &post.UserId, &post.Content, &post.CreationDate, &post.Likes, &post.Dislikes)
 		post.Author = db.GetUserNameById(post.Id)
-		post.IsLiked = db.CheckIfLikedPost(post.Id, post.UserId)
+		post.IsLiked = db.CheckIfLikedPost(post.Id, userId)
 		rows, err := db.DataDB.Query("SELECT category_name FROM category c LEFT JOIN post_category p ON c.id = p.category_id WHERE p.post_id = ?", post.Id)
 		if err != nil {
 			return []types.Post{}, err
