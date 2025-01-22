@@ -61,7 +61,7 @@ export const connectToServer = () => {
       document
         .querySelector(".users-list")
         .prepend(document.getElementById(targetId));
-      conn.send(targetId + " " + message.value);
+      conn.send(JSON.stringify({target: targetId, content: message.value}));
       message.value = "";
     }
   });

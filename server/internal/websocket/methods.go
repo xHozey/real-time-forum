@@ -1,14 +1,13 @@
 package websocket
 
 import (
-	"bytes"
 	"log"
-	"strconv"
 )
 
 func (c *Client) read() {
 	for {
-		_, msg, err := c.Conn.ReadMessage()
+		var msg Message
+		err := c.Conn.ReadJSON(&msg)
 		if err != nil {
 			log.Println(err)
 			break
@@ -17,20 +16,11 @@ func (c *Client) read() {
 	}
 }
 
-func (db *WSlayer) handleMsg(msg []byte, id int) {
-	parts := bytes.SplitN(msg, []byte(" "), 2)
-	if len(parts) != 2 {
-		return
-	}
-	target, err := strconv.Atoi(string(parts[0]))
-	if err != nil {
-		return
-	}
-
-	message := Message{SocketType: "chat", Sender: id, Content: string(parts[1])}
-	client, exist := Clients[target]
+func (db *WSlayer) handleMsg(msg Message, id int) {
+	message := Message{SocketType: "chat", Sender: id, Content: msg.Content}
+	client, exist := Clients[msg.Target]
 	if exist {
-		err := db.Data.InsertUserMessages(id, target, string(parts[1]))
+		err := db.Data.InsertUserMessages(id, msg.Target, msg.Content)
 		if err != nil {
 			log.Println(err)
 			return

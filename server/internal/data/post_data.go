@@ -6,17 +6,24 @@ import (
 	"forum/server/internal/types"
 )
 
-func (db *DataLayer) InsertPost(postData types.Post) error {
+func (db *DataLayer) InsertPost(postData types.Post) (types.Post, error) {
 	res, err := db.DataDB.Exec("INSERT INTO post (user_id,content) VALUES (?,?)", postData.UserId, html.EscapeString(postData.Content))
 	if err != nil {
-		return err
+		return types.Post{}, err
 	}
 	post_id, err := res.LastInsertId()
+	if err != nil {
+		return types.Post{}, err
+	}
 	for _, val := range postData.Categories {
 		id := db.GetCategorieId(val)
 		db.InsertPostCategorie(post_id, id)
 	}
-	return err
+	post, err := db.GetPostById(int(post_id))
+	if err != nil {
+		return types.Post{}, err
+	}
+	return post, nil
 }
 
 func (db *DataLayer) CheckIfPostExist(post_id int) bool {
@@ -50,7 +57,7 @@ func (db *DataLayer) GetAllPosts(userId int) ([]types.Post, error) {
 	for rows.Next() {
 		post := types.Post{}
 		rows.Scan(&post.Id, &post.UserId, &post.Content, &post.CreationDate, &post.Likes, &post.Dislikes)
-		post.Author = db.GetUserNameById(post.Id)
+		post.Author = db.GetUserNameById(post.UserId)
 		post.IsLiked = db.CheckIfLikedPost(post.Id, userId)
 		rows, err := db.DataDB.Query("SELECT category_name FROM category c LEFT JOIN post_category p ON c.id = p.category_id WHERE p.post_id = ?", post.Id)
 		if err != nil {

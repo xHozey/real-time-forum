@@ -1,5 +1,4 @@
-import { postRequest } from "../utils/helpers.js";
-import { fillPost } from "../utils/helpers.js";
+import { fillPost, postRequest } from "../utils/helpers.js";
 export const showPostPanel = () => {
   const openAddPostInput = document.getElementById("open-add-post");
   const popupOverlay = document.getElementById("popup-overlay");
@@ -36,18 +35,18 @@ export const showPostPanel = () => {
 
   const postButton = document.getElementById("Posting");
 
-  postButton.addEventListener("click", () => {
+  postButton.addEventListener("click",async () => {
     const postText = postContent.value.trim();
     if (postText) {
       let categories = [];
       document.querySelectorAll(".selected").forEach((categorie) => {
         categories.push(categorie.innerText);
       });
-      postRequest(
+      let post = await postRequest(
         { categories: categories, content: postContent.value },
         "/api/addpost"
       );
-
+      document.querySelector(".post-container").prepend(fillPost(post))
       postContent.value = "";
       characterCounter.textContent = "0/500";
       popupOverlay.classList.add("hidden");

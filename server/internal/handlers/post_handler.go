@@ -21,11 +21,12 @@ func (db *HandlerLayer) PostHandler(w http.ResponseWriter, r *http.Request) {
 		utils.SendResponseStatus(w, http.StatusBadRequest, err)
 		return
 	}
-	err = db.HandlerDB.ServiceDB.MiddlewareData.InsertPost(post)
+	insertedPost, err := db.HandlerDB.ServiceDB.MiddlewareData.InsertPost(post)
 	if err != nil {
 		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
 		return
 	}
+	utils.SendJsonData(w, &insertedPost)
 }
 
 func (db *HandlerLayer) GetPostsHandler(w http.ResponseWriter, r *http.Request) {

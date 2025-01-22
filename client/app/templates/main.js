@@ -46,7 +46,12 @@ export const main = `<div class="post-input-container">
             <button id="close-add-post" class="close-button">Close</button>
         </div>
     </div>
-    
+    <div id="comments-overlay" class=""popup-overlay hidden">
+        <input id="comment-input" type="text">
+        <div class="comments-container">
+        <span> hello there </span>
+        </div>
+    </div>
     
 </div>
 `;

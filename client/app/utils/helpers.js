@@ -66,9 +66,14 @@ export const postRequest = async (data, url) => {
       console.error(response.status);
       return
     }
-    return true;
+    try {
+      let insertedData = await response.json();
+      return insertedData
+    } catch(err) {
+      return true
+    }
   } catch (error) {
-    console.log("Error:", error);
+    console.error("Error:", error);
   }
 };
 
@@ -133,7 +138,11 @@ export const fillPost = (postInfo) => {
   const dislikeButton = post.querySelector(`#dislike-${postInfo.id}`);
   const likeCounter = post.querySelector("#like-counter")
   const dislikeCounter = post.querySelector("#dislike-counter")
-        
+   post.querySelector(`.comment`).onclick = () => {
+    console.log("hello");
+    
+    document.getElementById("comments-overlay").classList.remove('hidden')
+   }
   switch (postInfo.isliked) {
     case 1:
       likeButton.classList.add("liked");
@@ -162,3 +171,8 @@ export const fillPost = (postInfo) => {
 
   return post;
 };
+
+
+export const fillComment = (commentInfo) => {
+
+}
