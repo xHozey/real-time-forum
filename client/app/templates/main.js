@@ -46,12 +46,20 @@ export const main = `<div class="post-input-container">
             <button id="close-add-post" class="close-button">Close</button>
         </div>
     </div>
-    <div id="comments-overlay" class=""popup-overlay hidden">
-        <input id="comment-input" type="text">
-        <div class="comments-container">
-        <span> hello there </span>
+    
+<div id="comments-overlay" class="comments-overlay hidden">
+    <div class="comments-popup">
+        <div class="comments-header">
+            <h3>Comments</h3>
+            <button id="close-comments" class="close-button">×</button>
         </div>
-    </div>
+        <div class="comments-container">
+        </div>
+        <div class="comment-input-container">
+        <input id="comment-input" type="text" placeholder="Write a comment..." />
+        <button id="submit-comment">Send</button>
+        </div>
+</div>
     
 </div>
 `;

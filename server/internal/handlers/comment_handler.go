@@ -41,8 +41,10 @@ func (db *HandlerLayer) CommentHandler(w http.ResponseWriter, r *http.Request) {
 		utils.SendResponseStatus(w, http.StatusBadRequest, err)
 		return
 	}
-	if err := db.HandlerDB.ServiceDB.MiddlewareData.InsertComment(comment); err != nil {
+	insertedComment, err := db.HandlerDB.ServiceDB.MiddlewareData.InsertComment(comment)
+	if err != nil {
 		utils.SendResponseStatus(w, http.StatusLocked, err)
 		return
 	}
+	utils.SendJsonData(w, &insertedComment)
 }

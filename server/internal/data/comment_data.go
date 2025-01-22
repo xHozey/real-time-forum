@@ -1,17 +1,31 @@
 package data
 
 import (
+	"fmt"
 	"html"
 
 	"forum/server/internal/types"
 )
 
-func (db *DataLayer) InsertComment(comment types.Comment) error {
-	_, err := db.DataDB.Exec("INSERT INTO comment (user_id,post_id,content) VALUES (?,?,?)", comment.UserId, comment.PostId, html.EscapeString(comment.Content))
+func (db *DataLayer) InsertComment(comment types.Comment) (types.Comment, error) {
+	last, err := db.DataDB.Exec("INSERT INTO comment (user_id,post_id,content) VALUES (?,?,?)", comment.UserId, comment.PostId, html.EscapeString(comment.Content))
 	if err != nil {
-		return err
+		return types.Comment{}, err
 	}
-	return nil
+	lastRow, _ := last.LastInsertId()
+	insertedComment := db.getSingleComment(int(lastRow))
+	return insertedComment, nil
+}
+
+func (db *DataLayer) getSingleComment(comment_id int) types.Comment {
+	comment := types.Comment{}
+	db.DataDB.QueryRow(`
+    SELECT 
+        c.*,
+        (SELECT COUNT(*) FROM comment_react WHERE comment_id = c.id AND type = 1) AS likes,
+        (SELECT COUNT(*) FROM comment_react WHERE comment_id = c.id AND type = -1) AS dislikes
+    FROM comment c WHERE id = ?`, comment_id).Scan(&comment.Id, &comment.UserId, &comment.PostId, &comment.Content, &comment.CreationDate, &comment.Likes, &comment.Dislikes)
+	return comment
 }
 
 func (db *DataLayer) GetComments(post_id int) ([]types.Comment, error) {
@@ -23,6 +37,7 @@ func (db *DataLayer) GetComments(post_id int) ([]types.Comment, error) {
         (SELECT COUNT(*) FROM comment_react WHERE comment_id = c.id AND type = -1) AS dislikes
     FROM comment c WHERE post_id = ?`, post_id)
 	if err != nil {
+		fmt.Println(err)
 		return []types.Comment{}, err
 	}
 	for rows.Next() {

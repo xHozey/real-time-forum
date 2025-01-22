@@ -6,6 +6,7 @@ import { connectToServer } from "./websockets/connection.js";
 import { throttle } from "./utils/helpers.js";
 import { showPostPanel } from "./api/add_post.js";
 import { getPosts } from "./api/get_posts.js";
+import { addComments } from "./api/add_comments.js";
 const app = document.getElementById("app");
 const link = document.getElementById("css");
 const route = (event) => {
@@ -33,7 +34,7 @@ export const handleLocation = async () => {
       <link rel="stylesheet" href="./app/styles/main.css">
       <link rel="stylesheet" href="./app/styles/add_post.css">
       <link rel="stylesheet" href="./app/styles/posts.css">
-
+      <link rel="stylesheet" href="./app/styles/comments.css">
       `
       app.innerHTML = main;
       getUsers();
@@ -41,6 +42,7 @@ export const handleLocation = async () => {
       throttle();
       showPostPanel()
       getPosts()
+      addComments()
       break;
     default:
       app.innerHTML = "<h1>in progress</h1>";
