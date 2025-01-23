@@ -9,6 +9,7 @@ import (
 )
 
 func (db *ServiceLayer) ValidateLogin(user types.User) (int, error) {
+	
 	if user.Nickname != "" {
 		if err := utils.ValidateLength(user.Nickname); err != nil {
 			return 0, err

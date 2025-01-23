@@ -1,4 +1,6 @@
-export const main = `<div class="post-input-container">
+export const main = `
+
+<div class="post-input-container">
     <input
         type="text"
         id="open-add-post"
@@ -10,7 +12,6 @@ export const main = `<div class="post-input-container">
 </div>
 
 <div class="app-container">
-
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>Users</h2>
@@ -20,6 +21,15 @@ export const main = `<div class="post-input-container">
     </div>
 
     <div class="main-content">
+      <nav class="navbar">
+    <div class="navbar-left">
+      <span class="navbar-title">Zawya</span>
+    </div>
+    <div class="navbar-right">
+      <button id="logout-button" class="logout-button">Logout</button>
+    </div>
+  </nav>
+
         <div id="messages-display" class="hidden">
             <div class="message-header">
                 <h2 id="user-nickname"></h2>

@@ -29,7 +29,7 @@ func Routes(db *sql.DB) *http.ServeMux {
 	mux.Handle("GET /api/post/{id}/comment", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.GetCommentHandler), 10, time.Second*30))
 	mux.Handle("POST /api/reaction", dbLayers.HandlerDB.ServiceDB.RateLimiter(http.HandlerFunc(dbLayers.ReactionHandler), 10, time.Second))
 	mux.HandleFunc("/api/info", dbLayers.InfoHandler)
-	mux.HandleFunc("POST /logout", dbLayers.LogoutHandler)
+	mux.HandleFunc("GET /logout", dbLayers.LogoutHandler)
 	return mux
 }
 

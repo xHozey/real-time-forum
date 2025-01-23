@@ -15,10 +15,14 @@ func (db *HandlerLayer) HomeHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
+	id, _ := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
 	if r.URL.Path == "/" {
-		id, _ := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
 		if id == 0 {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
+		}
+	} else if r.URL.Path == "/login" || r.URL.Path == "/register" {
+		if id != 0 {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
 	}
 	tpl.Execute(w, nil)

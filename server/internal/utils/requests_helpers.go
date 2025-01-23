@@ -37,6 +37,7 @@ func GiveCookie(w http.ResponseWriter, token string, now time.Time) {
 
 func DeleteCookie(w http.ResponseWriter) {
 	http.SetCookie(w, &http.Cookie{
+		Name:   types.CookieName,
 		MaxAge: -1,
 	})
 }

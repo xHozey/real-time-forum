@@ -7,6 +7,7 @@ import { throttleMessages, throttlePosts } from "./utils/helpers.js";
 import { showPostPanel } from "./api/add_post.js";
 import { getPosts } from "./api/get_posts.js";
 import { addComments } from "./api/add_comments.js";
+import { logout } from "./api/logout.js";
 const app = document.getElementById("app");
 const link = document.getElementById("css");
 const route = (event) => {
@@ -20,12 +21,12 @@ export const handleLocation = async () => {
   const path = window.location.pathname;
   switch (path) {
     case "/register":
-      link.innerHTML = `<link rel="stylesheet" href="./app/styles/auth.css">`
+      link.innerHTML = `<link rel="stylesheet" href="./app/styles/auth.css">`;
       app.innerHTML = register;
       registerSendData();
       break;
     case "/login":
-      link.innerHTML = `<link rel="stylesheet" href="./app/styles/auth.css">`
+      link.innerHTML = `<link rel="stylesheet" href="./app/styles/auth.css">`;
       app.innerHTML = login;
       loginSendData();
       break;
@@ -35,15 +36,18 @@ export const handleLocation = async () => {
       <link rel="stylesheet" href="./app/styles/add_post.css">
       <link rel="stylesheet" href="./app/styles/posts.css">
       <link rel="stylesheet" href="./app/styles/comments.css">
-      `
+      <link rel="stylesheet" href="./app/styles/users.css">
+      <link rel="stylesheet" href="./app/styles/navbar.css">
+      `;
       app.innerHTML = main;
       getUsers();
       connectToServer();
       throttleMessages();
-      showPostPanel()
-      getPosts()
-      addComments()
-      throttlePosts()
+      showPostPanel();
+      getPosts();
+      addComments();
+      throttlePosts();
+      logout();
       break;
     default:
       app.innerHTML = "<h1>in progress</h1>";
