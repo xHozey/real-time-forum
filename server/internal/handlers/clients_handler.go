@@ -15,10 +15,8 @@ func (db *HandlerLayer) ClientHandler(w http.ResponseWriter, r *http.Request) {
 		utils.SendResponseStatus(w, http.StatusNotFound, err)
 		return
 	}
-	query := r.URL.Query().Get("offset")
-	offset, err := strconv.Atoi(query)
+	offset, err := utils.GetOffset(w,r)
 	if err != nil {
-		utils.SendResponseStatus(w, http.StatusNotFound, err)
 		return
 	}
 	messages, err := db.HandlerDB.ServiceDB.MiddlewareData.GetConverceation(source, target, offset)
@@ -29,3 +27,4 @@ func (db *HandlerLayer) ClientHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	utils.SendJsonData(w, messages)
 }
+

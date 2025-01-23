@@ -43,14 +43,14 @@ func (db *DataLayer) GetCategorieId(categorie string) int {
 	return id
 }
 
-func (db *DataLayer) GetAllPosts(userId int) ([]types.Post, error) {
+func (db *DataLayer) GetAllPosts(userId, offset int) ([]types.Post, error) {
 	posts := []types.Post{}
 	rows, err := db.DataDB.Query(`
     SELECT 
         p.*,
         (SELECT COUNT(*) FROM post_react WHERE post_id = p.id AND type = 1) AS likes,
         (SELECT COUNT(*) FROM post_react WHERE post_id = p.id AND type = -1) AS dislikes
-    FROM post p ORDER BY p.created_at DESC`)
+    FROM post p ORDER BY p.created_at DESC LIMIT ? OFFSET ?`, types.Limit, offset)
 	if err != nil {
 		return []types.Post{}, err
 	}

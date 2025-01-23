@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"net/http"
+	"strconv"
+
 	"forum/server/internal/types"
 
 	"github.com/gofrs/uuid"
@@ -30,4 +33,14 @@ func ValidateLength(data string) error {
 func GenerateToken() string {
 	uid, _ := uuid.NewV4()
 	return uid.String()
+}
+
+func GetOffset(w http.ResponseWriter, r *http.Request) (int, error) {
+	query := r.URL.Query().Get("offset")
+	offset, err := strconv.Atoi(query)
+	if err != nil {
+		SendResponseStatus(w, http.StatusNotFound, err)
+		return 0, err
+	}
+	return offset, nil
 }

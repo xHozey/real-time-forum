@@ -7,7 +7,7 @@ import (
 )
 
 func (db *ServiceLayer) ValidatePost(post types.Post) error {
-	if len(strings.TrimSpace(post.Content)) == 0 || len(post.Content) > 2500 {
+	if len(strings.TrimSpace(post.Content)) == 0 || len(post.Content) > 500 {
 		return types.ErrInvalidPost
 	}
 	if !checkDuplicate(post.Categories) {

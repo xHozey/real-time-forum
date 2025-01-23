@@ -1,12 +1,12 @@
 import { getRequest, fillComment } from "../utils/helpers.js";
-
-export const getComment = async (postId) => {
-  const commentsContainer = document.querySelector(".comments-container");
-  const comments = await getRequest(`/api/post/${postId}/comment`);
-  commentsContainer.innerHTML = ""
+export const getComment = async (postId, commentsOffset) => {
+  const comments = await getRequest(`/api/post/${postId}/comment?` + new URLSearchParams({ offset: commentsOffset }));
   if (comments) {
+    const commentsContainer = document.querySelector(".comments-container");
     comments.forEach((cmt) => {
-      commentsContainer.prepend(fillComment(cmt));
+      commentsContainer.append(fillComment(cmt));
     });
+    commentsOffset += 10
   }
+  return commentsOffset
 };

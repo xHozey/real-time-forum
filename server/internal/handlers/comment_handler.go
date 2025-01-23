@@ -14,7 +14,11 @@ func (db *HandlerLayer) GetCommentHandler(w http.ResponseWriter, r *http.Request
 		utils.SendResponseStatus(w, http.StatusNotFound, err)
 		return
 	}
-	comments, err := db.HandlerDB.ServiceDB.MiddlewareData.GetComments(id)
+	offset, err := utils.GetOffset(w,r)
+	if err != nil {
+		return
+	}
+	comments, err := db.HandlerDB.ServiceDB.MiddlewareData.GetComments(id, offset)
 	if err != nil {
 		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
 		return

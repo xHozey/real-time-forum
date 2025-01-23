@@ -1,7 +1,9 @@
 import { loadMessages, targetId } from "../api/users.js";
 import { sendReaction } from "../api/reaction.js";
 import { getComment } from "../api/get_comments.js";
-export let targetPost
+import { getPosts } from "../api/get_posts.js";
+export let targetPost;
+export let commentsOffset;
 export const escapeHtml = (unsafe) => {
   return unsafe
     .replace(/&/g, "&amp;")
@@ -23,11 +25,15 @@ export const sendMessage = (message, name) => {
   content.classList.add("message-content");
   content.innerText = message;
   div.append(content);
+  let timestamp = document.createElement("div");
+  timestamp.classList.add("message-timestamp");
+  timestamp.innerText = new Date().toLocaleTimeString();
+  div.append(timestamp);
   messagesContainer.append(div);
   messagesContainer.scroll(0, messagesContainer.scrollHeight);
 };
 
-export const prepandMessage = (message, name) => {
+export const prepandMessage = (message, name, date) => {
   let messagesContainer = document.querySelector(".messages-container");
   let div = document.createElement("div");
   div.classList.add("message");
@@ -39,6 +45,10 @@ export const prepandMessage = (message, name) => {
   content.classList.add("message-content");
   content.innerText = message;
   div.append(content);
+  let timestamp = document.createElement("div");
+  timestamp.classList.add("message-timestamp");
+  timestamp.innerText = date;
+  div.append(timestamp);
   messagesContainer.prepend(div);
 };
 
@@ -82,6 +92,9 @@ export const postRequest = async (data, url) => {
 export const getRequest = async (url) => {
   try {
     const res = await fetch(url);
+    if (!res.ok) {
+      return false;
+    }
     const data = await res.json();
     return data;
   } catch (error) {
@@ -89,19 +102,49 @@ export const getRequest = async (url) => {
   }
 };
 
-export const throttle = (element) => {
+export const throttleMessages = () => {
   let timer;
-  document
-    .querySelector(".messages-container")
-    .addEventListener("scroll", (event) => {
-      const container = document.querySelector(".messages-container");
-      clearTimeout(timer);
-      if (container.scrollTop == 0) {
-        timer = setTimeout(() => {
-          loadMessages(container, targetId);
-        }, 1000);
-      }
-    });
+  const container = document.querySelector(".messages-container");
+  container.addEventListener("scroll", () => {
+    clearTimeout(timer);
+    if (container.scrollTop == 0) {
+      timer = setTimeout(() => {
+        loadMessages(container, targetId);
+      }, 1000);
+    }
+  });
+};
+
+export const throttlePosts = () => {
+  let timer;
+  const container = document.querySelector(".post-container");
+  container.addEventListener("scroll", () => {
+    clearTimeout(timer);
+    if (
+      container.scrollTop + container.clientHeight >=
+      container.scrollHeight
+    ) {
+      timer = setTimeout(() => {
+        getPosts();
+      }, 1000);
+    }
+  });
+};
+
+export const throttleComments = (postId, commentsOffset) => {
+  const container = document.querySelector(".comments-container");
+  let timer;
+  container.addEventListener("scroll", () => {
+    clearTimeout(timer);
+    if (
+      container.scrollTop + container.clientHeight >=
+      container.scrollHeight
+    ) {
+      timer = setTimeout(async () => {
+        commentsOffset = await getComment(postId, commentsOffset);
+      }, 1000);
+    }
+  });
 };
 
 export const fillPost = (postInfo) => {
@@ -141,9 +184,12 @@ export const fillPost = (postInfo) => {
   const likeCounter = post.querySelector("#like-counter");
   const dislikeCounter = post.querySelector("#dislike-counter");
   post.querySelector(`.comment-icon`).onclick = async () => {
-    targetPost = postInfo.id
-    await getComment(postInfo.id)
+    targetPost = postInfo.id;
+    document.querySelector(".comments-container").innerHTML = "";
+    commentsOffset = 0;
+    commentsOffset = await getComment(postInfo.id, commentsOffset);
     document.getElementById("comments-overlay").classList.remove("hidden");
+    throttleComments(postInfo.id, commentsOffset);
   };
   switch (postInfo.isliked) {
     case 1:
@@ -192,18 +238,16 @@ export const fillPost = (postInfo) => {
 };
 
 export const fillComment = (commentInfo) => {
-  const comment = document.createElement('div')
-   comment.innerHTML = `<div class="comment-post">
+  const comment = document.createElement("div");
+  comment.innerHTML = `<div class="comment-post">
   <div class="comment-author">${commentInfo.author}</div>
   <div class="comment-text">${commentInfo.content}</div>
   <div class="comment-footer">
-      <span class="comment-datetime">${new Date(commentInfo.creation_date).toLocaleDateString(
-        "en-US"
-      )}</span>
+      <span class="comment-datetime">${new Date(
+        commentInfo.creation_date
+      ).toLocaleDateString("en-US")}</span>
       <div class="comment-actions">
-          <button id="like-${
-            commentInfo.id
-          }" class="icons actionIcon"></button>
+          <button id="like-${commentInfo.id}" class="icons actionIcon"></button>
         <span id="like-counter" class="nbr">${commentInfo.likes}</span>
         <button id="dislike-${
           commentInfo.id

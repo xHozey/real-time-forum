@@ -46,6 +46,13 @@ export const connectToServer = () => {
       console.error("WebSocket is closed");
       return;
     }
+    if (message.value.length > 2000) {
+      message.classList.add("error");
+      setTimeout(() => {
+        message.classList.remove("error");
+      }, 1000);
+      return
+    }
     if (
       document
         .getElementById(`status-` + targetId)

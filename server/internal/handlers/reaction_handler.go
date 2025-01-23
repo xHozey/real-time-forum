@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"forum/server/internal/types"
@@ -10,10 +9,14 @@ import (
 
 func (db *HandlerLayer) ReactionHandler(w http.ResponseWriter, r *http.Request) {
 	react := types.Reaction{}
-	json.NewDecoder(r.Body).Decode(&react)
+	err := utils.DecodeRequest(r, &react)
+	if err != nil {
+		utils.SendResponseStatus(w, http.StatusBadRequest, err)
+		return
+	}
 	id, _ := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
 
-	err := db.HandlerDB.CheckReactInput(react)
+	err = db.HandlerDB.CheckReactInput(react)
 	if err != nil {
 		utils.SendResponseStatus(w, http.StatusBadRequest, err)
 		return

@@ -28,14 +28,14 @@ func (db *DataLayer) getSingleComment(comment_id int) types.Comment {
 	return comment
 }
 
-func (db *DataLayer) GetComments(post_id int) ([]types.Comment, error) {
+func (db *DataLayer) GetComments(post_id, offset int) ([]types.Comment, error) {
 	comments := []types.Comment{}
 	rows, err := db.DataDB.Query(`
     SELECT 
         c.*,
         (SELECT COUNT(*) FROM comment_react WHERE comment_id = c.id AND type = 1) AS likes,
         (SELECT COUNT(*) FROM comment_react WHERE comment_id = c.id AND type = -1) AS dislikes
-    FROM comment c WHERE post_id = ?`, post_id)
+    FROM comment c WHERE post_id = ? ORDER BY c.created_at DESC LIMIT ? OFFSET ?`, post_id, types.Limit, offset)
 	if err != nil {
 		fmt.Println(err)
 		return []types.Comment{}, err

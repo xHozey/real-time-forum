@@ -16,7 +16,7 @@ type MiddleWareLayer struct {
 func (db *MiddleWareLayer) Allow(ip string) bool {
 	now := time.Now()
 	refill, lastRefill := db.MiddlewareData.ExtractBucketDate(ip)
-	tokensToAdd := int(now.Sub(lastRefill) / (time.Second*time.Duration(refill)))
+	tokensToAdd := int(now.Sub(lastRefill) / (time.Second * time.Duration(refill)))
 	if tokensToAdd > 0 {
 		db.MiddlewareData.RefillTokens(tokensToAdd, ip)
 	}
@@ -25,8 +25,8 @@ func (db *MiddleWareLayer) Allow(ip string) bool {
 
 func (db *MiddleWareLayer) RateLimiter(next http.Handler, maxTokens int, refillTime time.Duration) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		db.MiddlewareData.GiveBucket(r.RemoteAddr, maxTokens, refillTime, r.URL.Path)
-		if !db.Allow(r.RemoteAddr) {
+		err := db.MiddlewareData.GiveBucket(r.RemoteAddr, maxTokens, refillTime, r.URL.Path)
+		if !db.Allow(r.RemoteAddr) || err != nil {
 			utils.SendResponseStatus(w, http.StatusTooManyRequests, errors.New("too many requests"))
 			return
 		}

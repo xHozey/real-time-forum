@@ -13,7 +13,7 @@ import (
 func main() {
 	db, err := data.InitDb()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	config := http.Server{

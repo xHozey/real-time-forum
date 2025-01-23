@@ -5,11 +5,13 @@ import (
 	"time"
 )
 
-func (db *DataLayer) GiveBucket(ip string, tokens int, refill time.Duration, route string) {
+func (db *DataLayer) GiveBucket(ip string, tokens int, refill time.Duration, route string) error {
 	_, err := db.DataDB.Exec("INSERT OR IGNORE INTO token_bucket (ip, tokens, maxTokens, refill, route) VALUES (?,?,?,?,?)", ip, tokens, tokens, refill, route)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return err
 	}
+	return nil
 }
 
 func (db *DataLayer) RefillTokens(tokensToAdd int, ip string) {

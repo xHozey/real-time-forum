@@ -31,7 +31,11 @@ func (db *HandlerLayer) PostHandler(w http.ResponseWriter, r *http.Request) {
 
 func (db *HandlerLayer) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	id, _ := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
-	posts, err := db.HandlerDB.ServiceDB.MiddlewareData.GetAllPosts(id)
+	offset, err := utils.GetOffset(w, r)
+	if err != nil {
+		return
+	}
+	posts, err := db.HandlerDB.ServiceDB.MiddlewareData.GetAllPosts(id, offset)
 	if err != nil {
 		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
 		return
@@ -52,6 +56,7 @@ func (db *HandlerLayer) GetPostByIdHandler(w http.ResponseWriter, r *http.Reques
 	post, err := db.HandlerDB.ServiceDB.MiddlewareData.GetPostById(id)
 	if err != nil {
 		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
+		return
 	}
 
 	if err := utils.SendJsonData(w, &post); err != nil {

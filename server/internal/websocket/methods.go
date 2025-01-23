@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"log"
+	"time"
 )
 
 func (c *Client) read() {
@@ -12,12 +13,15 @@ func (c *Client) read() {
 			log.Println(err)
 			break
 		}
+		if len(msg.Content) > 2000 {
+			continue
+		}
 		c.Db.handleMsg(msg, c.Id)
 	}
 }
 
 func (db *WSlayer) handleMsg(msg Message, id int) {
-	message := Message{SocketType: "chat", Sender: id, Content: msg.Content}
+	message := Message{SocketType: "chat", Sender: id, Content: msg.Content, Creation: time.Now()}
 	client, exist := Clients[msg.Target]
 	if exist {
 		err := db.Data.InsertUserMessages(id, msg.Target, msg.Content)

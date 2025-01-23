@@ -35,19 +35,17 @@ const target = async (id) => {
   targetId = id;
   messages[targetId] = 0;
   await loadMessages(messagesContainer, targetId);
-
   display.classList.remove("hidden");
   messagesContainer.scroll(0, messagesContainer.scrollHeight);
 };
 
 export const loadMessages = async (container, id) => {
-  let y = container.scrollHeight;
   const url =
     `/api/client/${id}?` + new URLSearchParams({ offset: messages[id] });
   const data = await getRequest(url);
-  if (data) {
+  if (data.length != 0) {
     data.forEach((msg) => {
-      prepandMessage(msg.content, msg.sender);
+      prepandMessage(msg.content, msg.sender, new Date(msg.creation).toLocaleTimeString());
     });
     messages[id] += limit;
     container.scroll(0, 85 * limit);

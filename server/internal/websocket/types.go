@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"sync"
+	"time"
 
 	"forum/server/internal/data"
 
@@ -32,8 +33,9 @@ type Client struct {
 }
 
 type Message struct {
-	SocketType string `json:"type"`
-	Sender     int    `json:"sender"`
-	Target     int    `json:"target"`
-	Content    string `json:"content"`
+	SocketType string    `json:"type"`
+	Sender     int       `json:"sender"`
+	Target     int       `json:"target"`
+	Content    string    `json:"content"`
+	Creation   time.Time `json:"creation"`
 }

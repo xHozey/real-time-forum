@@ -66,50 +66,57 @@
 .not-liked {
     background-image: url(../icons/like.svg);
     background-size: cover;
+    cursor: pointer;
 }
 
 .not-disliked{
     background-image: url(../icons/dislike.svg);
     background-size: cover;
+    cursor: pointer;
+    
 }
 
 .liked {
     background-image: url(../icons/solid_like.svg);
     background-size: cover;
+    cursor: pointer;
+
 }
 
 .disliked {
     background-image: url(../icons/solid_dislike.svg);
     background-size: cover;
+    cursor: pointer;
+
 }
 
 .comment-icon {
     background-image: url(../icons/comment.svg);
     background-size: cover;
+    cursor: pointer;
+
 }
 
-/* Categories Container */
 .categories {
     display: flex;
-    flex-wrap: wrap; /* Allow categories to wrap to the next line */
-    gap: 8px; /* Space between categories */
-    margin-bottom: 12px; /* Space below categories */
+    flex-wrap: wrap; 
+    gap: 8px; 
+    margin-bottom: 12px; 
 }
 
-/* Individual Category */
+
 .post-categorie {
-    background-color: #7289da; /* Discord-like blue background */
-    color: #fff; /* White text */
-    font-size: 12px; /* Small font size */
-    padding: 4px 8px; /* Padding inside the category */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.2s ease; /* Smooth hover effect */
+    background-color: #7289da; 
+    color: #fff; 
+    font-size: 12px; 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: background-color 0.2s ease; 
 }
 
-/* Hover Effect */
 .post-categorie:hover {
-    background-color: #677bc4; /* Slightly darker blue on hover */
+    background-color: #677bc4; 
 }
 
 .nbr {
