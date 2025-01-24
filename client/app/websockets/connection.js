@@ -1,4 +1,5 @@
-import { myNickname, targetId, myId } from "../api/users.js";
+import { myNickname } from "../api/users.js";
+import { targetId } from "../services/users.js";
 import { sendMessage, createUser } from "../utils/helpers.js";
 import { nav } from "../utils/navigation.js";
 

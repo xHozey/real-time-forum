@@ -1,9 +1,8 @@
 import { getRequest, prepandMessage, createUser } from "../utils/helpers.js";
+import { messages } from "../services/users.js";
 export let myNickname;
 export let myId;
-export let targetId;
-const limit = 10;
-let messages = [];
+export const limit = 10;
 
 export const getUsers = async () => {
   try {
@@ -25,10 +24,12 @@ export const loadMessages = async (container, id) => {
   const data = await getRequest(url);
   if (data.length != 0) {
     data.forEach((msg) => {
-      prepandMessage(msg.content, msg.sender, new Date(msg.creation).toLocaleTimeString());
+      prepandMessage(
+        msg.content,
+        msg.sender,
+        new Date(msg.creation).toLocaleTimeString()
+      );
     });
-    messages[id] += limit;
     container.scroll(0, 85 * limit);
   }
 };
-

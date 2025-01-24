@@ -1,14 +1,14 @@
 .post-input-container {
-    position: fixed; 
-    top: 60px; 
-    left: 50%; 
-    transform: translateX(-50%); 
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
-    max-width: 500px; 
-    background-color: #40444b; 
-    padding: 15px; 
-    border-radius: 8px; 
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); 
+    max-width: 500px;
+    background-color: #40444b;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .post-input {
@@ -20,7 +20,7 @@
     color: #fff;
     font-size: 14px;
     cursor: pointer;
-    text-align: center; 
+    text-align: center;
 }
 
 .post-input:focus {
@@ -138,4 +138,22 @@
 
 .hidden {
     display: none;
+}
+
+@media (max-width: 1270px) {
+    .post-input-container {
+        left: 60%;
+    }
+}
+
+@media (max-width: 900px) {
+    .post-input-container {
+        width: 40%;
+    }
+}
+
+@media (max-width: 670px) {
+    .post-input-container {
+        left: 68%;
+    }
 }

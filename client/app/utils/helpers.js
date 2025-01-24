@@ -1,4 +1,5 @@
-import { loadMessages, targetId } from "../api/users.js";
+import { loadMessages } from "../api/users.js";
+import { target, targetId } from "../services/users.js";
 import { sendReaction } from "../api/reaction.js";
 import { getComment, getPosts } from "../api/get_threads.js";
 export let targetPost;
@@ -57,11 +58,12 @@ export const createUser = (user) => {
   const div = document.createElement("div");
   div.classList.add("user-item");
   div.id = user.id;
-  div.setAttribute("onclick", `target(${user.id})`);
+
   div.setAttribute("data-nickname", `${user.nickname}`);
   div.innerHTML = `${user.nickname} <span id="status-${user.id}" class="${
     user.status ? "online" : "offline"
   }"></span>`;
+  div.addEventListener("click", () => target(user.id));
   usersList.append(div);
 };
 

@@ -206,3 +206,32 @@
     color: #80848e; 
     margin-top: 4px; 
 }
+
+
+
+@media (max-width: 1270px) {
+    .message-input {
+        width: 80vh;
+    }
+    .messages-container {
+        width: 80vh;
+    }
+}
+
+@media (max-width: 900px) {
+    .message-input {
+        width: 60vh;
+    }
+    .messages-container {
+        width: 60vh;
+    }
+}
+
+@media (max-width: 670px) {
+    .message-input {
+        width: 40vh;
+    }
+    .messages-container {
+        width: 40vh;
+    }
+}
