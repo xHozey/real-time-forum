@@ -10,6 +10,8 @@ export const connectToServer = () => {
     switch (res.type) {
       case "chat":
         const targetDiv = document.getElementById(res.sender);
+        console.log(targetDiv);
+        
         if (targetId == res.sender) {
           sendMessage(res.content, targetDiv.dataset.nickname);
         } else {
@@ -20,7 +22,6 @@ export const connectToServer = () => {
 
       case "status":
         let div = document.getElementById(`status-${res.id}`);
-
         if (div) {
           div.classList.remove("offline", "online");
           if (res.status) {

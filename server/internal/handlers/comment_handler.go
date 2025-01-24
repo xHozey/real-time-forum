@@ -14,7 +14,7 @@ func (db *HandlerLayer) GetCommentHandler(w http.ResponseWriter, r *http.Request
 		utils.SendResponseStatus(w, http.StatusNotFound, err)
 		return
 	}
-	offset, err := utils.GetOffset(w,r)
+	offset, err := utils.GetOffset(w, r)
 	if err != nil {
 		return
 	}
@@ -36,7 +36,8 @@ func (db *HandlerLayer) CommentHandler(w http.ResponseWriter, r *http.Request) {
 		utils.SendResponseStatus(w, http.StatusBadRequest, err)
 		return
 	}
-	comment.UserId, _ = db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	id, nickname := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	comment.UserId = id
 	if comment.UserId == 0 {
 		utils.SendResponseStatus(w, http.StatusUnauthorized, types.ErrUnauthorized)
 		return
@@ -50,5 +51,6 @@ func (db *HandlerLayer) CommentHandler(w http.ResponseWriter, r *http.Request) {
 		utils.SendResponseStatus(w, http.StatusLocked, err)
 		return
 	}
+	insertedComment.Author = nickname
 	utils.SendJsonData(w, &insertedComment)
 }

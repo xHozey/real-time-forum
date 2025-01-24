@@ -11,7 +11,8 @@ import (
 func (db *HandlerLayer) PostHandler(w http.ResponseWriter, r *http.Request) {
 	post := types.Post{}
 	utils.DecodeRequest(r, &post)
-	post.UserId, _ = db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	id, nickname := db.HandlerDB.ServiceDB.MiddlewareData.GetUserBySession(utils.GetCookie(r))
+	post.UserId = id
 	if post.UserId == 0 {
 		utils.SendResponseStatus(w, http.StatusUnauthorized, types.ErrUnauthorized)
 		return
@@ -26,6 +27,7 @@ func (db *HandlerLayer) PostHandler(w http.ResponseWriter, r *http.Request) {
 		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
 		return
 	}
+	insertedPost.Author = nickname
 	utils.SendJsonData(w, &insertedPost)
 }
 

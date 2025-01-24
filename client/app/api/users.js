@@ -10,9 +10,11 @@ export const getUsers = async () => {
     let data = await res.json();
     myNickname = data.Nickname;
     myId = data.UserId;
-    data.Clients.forEach((user) => {
-      createUser(user);
-    });
+    if (data.length != 0) {
+      data.Clients.forEach((user) => {
+        createUser(user);
+      });
+    }
   } catch (err) {
     console.error(err);
   }
