@@ -81,12 +81,11 @@
 
 .message {
     text-align: left;
-    padding: 26px 16px;
+    padding: 22px 16px;
     display: flex;
     flex-direction: column;
     gap: 2px;
     width: 100%;
-    height: 100px;
 }
 
 .message-author {

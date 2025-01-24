@@ -1,5 +1,7 @@
 import { myNickname, targetId, myId } from "../api/users.js";
 import { sendMessage, createUser } from "../utils/helpers.js";
+import { nav } from "../utils/navigation.js";
+
 export const connectToServer = () => {
   const conn = new WebSocket("ws://localhost:8080/ws");
   conn.onmessage = (event) => {
@@ -28,16 +30,16 @@ export const connectToServer = () => {
         } else {
           createUser(res);
         }
-
         break;
     }
   };
 
-  conn.onclose = (event) => {
-    console.log("WebSocket connection closed:", event.reason);
-  };
-  conn.onerror = (event) => {
+  conn.onerror = (error) => {
     console.error("WebSocket error:", error);
+  };
+
+  conn.onclose = (event) => {
+    console.log("WebSocket connection closed:", event.code, event.reason);
   };
 
   document.getElementById("btn-message").addEventListener("click", () => {
@@ -46,12 +48,12 @@ export const connectToServer = () => {
       console.error("WebSocket is closed");
       return;
     }
-    if (message.value.length > 2000) {
+    if (message.value.length > 500 || !message.value.trim()) {
       message.classList.add("error");
       setTimeout(() => {
         message.classList.remove("error");
       }, 1000);
-      return
+      return;
     }
     if (
       document
@@ -68,8 +70,15 @@ export const connectToServer = () => {
       document
         .querySelector(".users-list")
         .prepend(document.getElementById(targetId));
-      conn.send(JSON.stringify({target: targetId, content: message.value}));
+      conn.send(JSON.stringify({ target: targetId, content: message.value }));
       message.value = "";
     }
   });
+  document
+    .getElementById("logout-button")
+    .addEventListener("click", async () => {
+      conn.close(1001, "logout");
+      await fetch("/logout");
+      nav("/login");
+    });
 };

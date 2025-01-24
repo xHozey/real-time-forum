@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"log"
+	"strings"
 	"time"
 )
 
@@ -13,7 +14,7 @@ func (c *Client) read() {
 			log.Println(err)
 			break
 		}
-		if len(msg.Content) > 2000 {
+		if len(msg.Content) > 2000 || len(strings.TrimSpace(msg.Content)) == 0 {
 			continue
 		}
 		c.Db.handleMsg(msg, c.Id)

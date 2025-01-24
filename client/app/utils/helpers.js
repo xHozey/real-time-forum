@@ -1,9 +1,9 @@
 import { loadMessages, targetId } from "../api/users.js";
 import { sendReaction } from "../api/reaction.js";
-import { getComment } from "../api/get_comments.js";
-import { getPosts } from "../api/get_posts.js";
+import { getComment, getPosts } from "../api/get_threads.js";
 export let targetPost;
 export let commentsOffset;
+
 export const escapeHtml = (unsafe) => {
   return unsafe
     .replace(/&/g, "&amp;")

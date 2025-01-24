@@ -1,15 +1,16 @@
 import { login, register } from "./templates/auth.js";
-import { registerSendData, loginSendData } from "./api/auth.js";
+import { registerService, loginSerive } from "./services/auth.js";
 import { main } from "./templates/main.js";
 import { getUsers } from "./api/users.js";
 import { connectToServer } from "./websockets/connection.js";
 import { throttleMessages, throttlePosts } from "./utils/helpers.js";
-import { showPostPanel } from "./api/add_post.js";
-import { getPosts } from "./api/get_posts.js";
-import { addComments } from "./api/add_comments.js";
-import { logout } from "./api/logout.js";
+import { showPostPanel } from "./services/threads.js";
+import { getPosts } from "./api/get_threads.js";
+import { addComments } from "./services/threads.js";
+
 const app = document.getElementById("app");
 const link = document.getElementById("css");
+
 const route = (event) => {
   event = event || window.event;
   event.preventDefault();
@@ -23,12 +24,12 @@ export const handleLocation = async () => {
     case "/register":
       link.innerHTML = `<link rel="stylesheet" href="./app/styles/auth.css">`;
       app.innerHTML = register;
-      registerSendData();
+      registerService();
       break;
     case "/login":
       link.innerHTML = `<link rel="stylesheet" href="./app/styles/auth.css">`;
       app.innerHTML = login;
-      loginSendData();
+      loginSerive();
       break;
     case "/":
       link.innerHTML = `
@@ -47,7 +48,6 @@ export const handleLocation = async () => {
       getPosts();
       addComments();
       throttlePosts();
-      logout();
       break;
     default:
       app.innerHTML = "<h1>in progress</h1>";

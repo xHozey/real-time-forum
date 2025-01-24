@@ -25,9 +25,13 @@ func (db *WSlayer) WsHandler(w http.ResponseWriter, r *http.Request) {
 	client.notify()
 	client.read()
 	defer func() {
-		client.Status = false
-		client.notify()
 		db.Data.DataDB.Exec("UPDATE user_profile SET status = 0 WHERE id = ?", id)
+		client.Status = false
+		mu.Lock()
+		delete(Clients, id)
+		mu.Unlock()
+		client.notify()
 		conn.Close()
 	}()
 }
+
