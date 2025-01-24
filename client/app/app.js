@@ -7,10 +7,10 @@ import { throttleMessages, throttlePosts } from "./utils/helpers.js";
 import { showPostPanel } from "./services/threads.js";
 import { getPosts } from "./api/get_threads.js";
 import { addComments } from "./services/threads.js";
+import { notFound } from "./templates/not_found.js";
 
 const app = document.getElementById("app");
 const link = document.getElementById("css");
-
 const route = (event) => {
   event = event || window.event;
   event.preventDefault();
@@ -50,7 +50,8 @@ export const handleLocation = async () => {
       throttlePosts();
       break;
     default:
-      app.innerHTML = "<h1>in progress</h1>";
+      link.innerHTML = `<link rel="stylesheet" href="./app/styles/not_found.css">`
+      app.innerHTML = notFound;
       break;
   }
 };

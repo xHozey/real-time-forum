@@ -38,7 +38,10 @@ func (c *Client) notify() {
 	for _, client := range Clients {
 		if client.Id != c.Id {
 			c.SocketType = "status"
-			client.Conn.WriteJSON(&c)
+			err := client.Conn.WriteJSON(&c)
+			if err != nil {
+				log.Println(err)
+			}
 		}
 	}
 }

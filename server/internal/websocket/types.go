@@ -30,6 +30,7 @@ type Client struct {
 	Conn       *websocket.Conn
 	Status     bool `json:"status"`
 	Db         WSlayer
+	Window     int
 }
 
 type Message struct {

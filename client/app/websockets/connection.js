@@ -77,7 +77,7 @@ export const connectToServer = () => {
   document
     .getElementById("logout-button")
     .addEventListener("click", async () => {
-      conn.close(1001, "logout");
+      conn.close(1000, "logout");
       await fetch("/logout");
       nav("/login");
     });
