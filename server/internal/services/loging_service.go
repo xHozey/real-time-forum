@@ -20,7 +20,10 @@ func (db *ServiceLayer) ValidateLogin(user types.User) (int, error) {
 	}
 
 	id, hash := db.ServiceDB.MiddlewareData.GetUserPassword(user.Nickname)
-	return id, utils.ComparePass(user.Password, hash)
+	if err := utils.ComparePass(user.Password, hash); err != nil {
+		return 0, types.ErrInvalidCredentials
+	}
+	return id, nil
 }
 
 func (db *ServiceLayer) UpdateSession(w http.ResponseWriter, userId int) error {

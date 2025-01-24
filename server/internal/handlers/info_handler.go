@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
 	"forum/server/internal/types"
@@ -16,11 +16,16 @@ func (db *HandlerLayer) InfoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	users, err := db.HandlerDB.ServiceDB.MiddlewareData.GetAllUsers(id)
 	if err != nil {
-		fmt.Println(err)
-		utils.SendResponseStatus(w, http.StatusInternalServerError, err)
+		log.Println(err)
+		utils.SendResponseStatus(w, http.StatusInternalServerError, types.ErrInternalServerError)
 		return
 	}
 	data := types.InfoUser{UserId: id, Nickname: nickname, Clients: users}
 
-	utils.SendJsonData(w, &data)
+	err = utils.SendJsonData(w, &data)
+	if err != nil {
+		log.Println(err)
+		utils.SendResponseStatus(w, http.StatusInternalServerError, types.ErrInternalServerError)
+		return
+	}
 }

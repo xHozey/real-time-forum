@@ -14,6 +14,7 @@ func main() {
 	db, err := data.InitDb()
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	config := http.Server{

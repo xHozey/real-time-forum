@@ -10,22 +10,22 @@ import (
 
 func (service *ServiceLayer) ValidateCredentials(user types.User) error {
 	if _, err := mail.ParseAddress(user.Email); err != nil {
-		return err
+		return types.ErrInvalidEmail
 	}
 	if err := validateGender(user.Gender); err != nil {
 		return err
 	}
 	if err := utils.ValidateLength(user.FirstName); err != nil {
-		return err
+		return types.ErrInvalidFirstName
 	}
 	if err := utils.ValidateLength(user.LastName); err != nil {
-		return err
+		return types.ErrInvalidLastName
 	}
 	if err := utils.ValidateLength(user.Nickname); err != nil {
-		return err
+		return types.ErrInvalidNickname
 	}
 	if err := utils.ValidateLength(user.Password); err != nil {
-		return err
+		return types.ErrInvalidPassword
 	}
 	if user.Age > 100 || user.Age <= 0 {
 		return types.ErrAgeLimit
@@ -49,7 +49,7 @@ func (db *ServiceLayer) checkIfExists(user types.User) error {
 func (db *ServiceLayer) InsertClearCredential(user types.User) error {
 	pass, err := utils.HashPass(user.Password)
 	if err != nil {
-		return err
+		return types.ErrInvalidPassword
 	}
 	user.Password = pass
 	user.Nickname = strings.ToLower(user.Nickname)
