@@ -6,8 +6,6 @@ export const handleIncommingMessage = (msg) => {
   switch (msg.type) {
     case "chat":
       const targetDiv = document.getElementById(msg.sender);
-      console.log(targetDiv);
-
       if (targetId == msg.sender) {
         sendMessage(msg.content, targetDiv.dataset.nickname);
       } else {
@@ -61,4 +59,14 @@ export const sendPrivateMessage = (conn) => {
     conn.send(JSON.stringify({ target: targetId, content: message.value }));
     message.value = "";
   }
+};
+
+export const typingStatus = (conn) => {
+//   const input = document.getElementById("message");
+//   input.addEventListener("input", () => {
+//     const targetStatus = document.getElementById(`status-${targetId}`);
+//     if (targetStatus.classList.contains("offline")) return;
+//     conn.send(JSON.stringify({target: targetId, type: "typing"}))
+    
+//   });
 };

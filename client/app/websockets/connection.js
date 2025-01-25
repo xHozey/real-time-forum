@@ -1,6 +1,7 @@
 import {
   handleIncommingMessage,
   sendPrivateMessage,
+  typingStatus
 } from "./handle_connection.js";
 import { nav } from "../utils/navigation.js";
 
@@ -11,6 +12,10 @@ export const connectToServer = () => {
   conn.onmessage = (event) => {
     let res = JSON.parse(event.data);
     handleIncommingMessage(res);
+  };
+
+  conn.onopen = () => {
+    console.log("Connected");
   };
 
   conn.onerror = (error) => {
@@ -25,9 +30,12 @@ export const connectToServer = () => {
     sendPrivateMessage(conn);
   });
 
+  typingStatus(conn)
+
   logoutBtn.addEventListener("click", async () => {
     conn.close(1000, "logout");
     await fetch("/logout");
     nav("/login");
   });
+
 };
