@@ -60,9 +60,21 @@ export const createUser = (user) => {
   div.id = user.id;
 
   div.setAttribute("data-nickname", `${user.nickname}`);
-  div.innerHTML = `${user.nickname} <span id="status-${user.id}" class="${
+  div.innerHTML = `
+    ${user.nickname} 
+    <span id="status-${user.id}" class="${
     user.status ? "online" : "offline"
-  }"></span>`;
+  }"></span>
+    <div class="typing-indicator-user hidden typing" id="typing-indicator-${user.id}">
+      <span>typing</span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  `;
+
   div.addEventListener("click", () => target(user.id));
   usersList.append(div);
 };

@@ -18,7 +18,7 @@ func main() {
 	}
 
 	config := http.Server{
-		Addr:    ":8080",
+		Addr:    ":1999",
 		Handler: routes.Routes(db),
 	}
 	log.Fatal(config.ListenAndServe())

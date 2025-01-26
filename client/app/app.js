@@ -39,6 +39,7 @@ export const handleLocation = async () => {
       <link rel="stylesheet" href="./app/styles/comments.css">
       <link rel="stylesheet" href="./app/styles/users.css">
       <link rel="stylesheet" href="./app/styles/navbar.css">
+      <link rel="stylesheet" href="./app/styles/typing_animation.css">
       `;
       app.innerHTML = main;
       getUsers();

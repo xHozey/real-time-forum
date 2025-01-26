@@ -3,10 +3,13 @@ import { sendMessage, createUser } from "../utils/helpers.js";
 import { myNickname } from "../api/users.js";
 
 export const handleIncommingMessage = (msg) => {
+  const typingIndicator = document.getElementById("typing-indicator");
+  const targetDiv = document.getElementById(msg.sender);
+  const user = document.getElementById(`typing-indicator-${msg.sender}`);
   switch (msg.type) {
     case "chat":
-      const targetDiv = document.getElementById(msg.sender);
       if (targetId == msg.sender) {
+        typingIndicator.classList.remove("hidden");
         sendMessage(msg.content, targetDiv.dataset.nickname);
       } else {
         targetDiv.classList.add("new-message");
@@ -15,18 +18,35 @@ export const handleIncommingMessage = (msg) => {
       break;
 
     case "status":
-      let div = document.getElementById(`status-${msg.id}`);
-      if (div) {
-        div.classList.remove("offline", "online");
+      let userStatus = document.getElementById(`status-${msg.id}`);
+      if (userStatus) {
+        userStatus.classList.remove("offline", "online");
         if (msg.status) {
-          div.classList.add("online");
+          userStatus.classList.add("online");
         } else {
-          div.classList.add("offline");
+          userStatus.classList.add("offline");
         }
       } else {
         createUser(msg);
       }
       break;
+
+    case "typing":
+      if (targetId == msg.sender) {
+        document.getElementById(
+          "typing-user"
+        ).innerText = `${targetDiv.dataset.nickname} is typing`;
+        typingIndicator.classList.remove("hidden");
+      } else {
+        user.classList.remove("hidden");
+      }
+      break;
+    case "stop-typing":
+      if (targetId == msg.sender) {
+        typingIndicator.classList.add("hidden");
+      } else {
+        user.classList.add("hidden");
+      }
   }
 };
 
@@ -62,11 +82,24 @@ export const sendPrivateMessage = (conn) => {
 };
 
 export const typingStatus = (conn) => {
-//   const input = document.getElementById("message");
-//   input.addEventListener("input", () => {
-//     const targetStatus = document.getElementById(`status-${targetId}`);
-//     if (targetStatus.classList.contains("offline")) return;
-//     conn.send(JSON.stringify({target: targetId, type: "typing"}))
-    
-//   });
+  const input = document.getElementById("message");
+  let debounce = false;
+  let timer;
+  input.addEventListener("input", () => {
+    const targetStatus = document.getElementById(`status-${targetId}`);
+    if (targetStatus.classList.contains("offline")) return;
+    clearTimeout(timer);
+    if (!debounce) {
+      conn.send(
+        JSON.stringify({ target: targetId, type: "typing", content: "typing" })
+      );
+      debounce = true;
+    }
+    timer = setTimeout(() => {
+      conn.send(
+        JSON.stringify({ target: targetId, type: "typing", content: "stop-typing" })
+      );
+      debounce = false;
+    }, 2000);
+  });
 };

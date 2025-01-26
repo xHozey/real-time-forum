@@ -12,3 +12,19 @@ body {
     height: 100vh;
     overflow: hidden;
 }
+
+.hidden {
+    display: none !important;
+}
+
+.new-message {
+    color: red !important;
+}
+
+.error {
+    border: 1px solid red !important;
+}
+
+.last-child {
+    order: 1;
+}

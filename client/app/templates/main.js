@@ -74,6 +74,14 @@ export const messageInput = `
 <div class="message-input">
     <input type="text" placeholder="Type your message here..." id="message"/>
     <button id="btn-message">Send</button>
+    <div class="typing-indicator hidden typing" id="typing-indicator">
+    <span id="typing-user"></span> 
+    <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    </div>
 </div>
 `;
 
