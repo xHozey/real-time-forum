@@ -24,7 +24,7 @@
 }
 
 .typing-indicator-user {
-    margin-left: auto; /* Push the indicator to the right */
+    margin-left: auto;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -43,32 +43,13 @@
     animation: typing 1.4s infinite ease-in-out;
 }
 
+.typing-indicator .dots span:nth-child(2),
 .typing-indicator-user .dots span:nth-child(2) {
     animation-delay: 0.2s;
 }
 
+.typing-indicator .dots span:nth-child(3),
 .typing-indicator-user .dots span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes typing {
-    0%, 60%, 100% {
-        transform: translateY(0);
-    }
-    30% {
-        transform: translateY(-6px);
-    }
-}
-
-.hidden {
-    display: none !important; /* Completely remove from rendering */
-}
-
-.typing-indicator .dots span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-indicator .dots span:nth-child(3) {
     animation-delay: 0.4s;
 }
 
