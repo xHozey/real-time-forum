@@ -11,7 +11,7 @@ export const notFound = `
             </div>
             <div class="discord-content">
                 <p>The page you're looking for doesn't exist or has been moved.</p>
-                <a href="/" class="discord-button">Go Back Home</a>
+                <a href="/" onclick="route()" class="discord-button">Go Back Home</a>
             </div>
         </div>
     </div>
