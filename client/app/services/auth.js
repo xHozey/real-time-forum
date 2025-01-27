@@ -41,13 +41,13 @@ export const registerService = () => {
       }
       clearError();
       const user = {
-        nickname: document.getElementById("nickname").value,
-        age: parseInt(document.getElementById("age").value, 10),
-        gender: document.getElementById("gender").value,
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value,
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value,
+        nickname: nickname.value,
+        age: parseInt(age.value, 10),
+        gender: gender.value,
+        firstName: firstName.value,
+        lastName: lastName.value,
+        email: email.value,
+        password: password.value,
       };
       await registerSendData(user);
     });
@@ -68,8 +68,8 @@ export const loginSerive = () => {
 
     clearError();
     const user = {
-      nickname: document.getElementById("username").value,
-      password: document.getElementById("password").value,
+      nickname: username.value,
+      password: password.value,
     };
     loginSendData(user);
   });

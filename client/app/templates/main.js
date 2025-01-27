@@ -112,13 +112,13 @@ export const popupOverlay = `
 </div>
 `;
 
-export const commentsPopup = `
-<div class="comments-popup">
-    ${commentsHeader}
-    ${commentsContainer}
-    ${commentInputContainer}
-</div>
-`;
+    export const commentsPopup = `
+    <div class="comments-popup">
+        ${commentsHeader}
+        ${commentsContainer}
+        ${commentInputContainer}
+    </div>
+    `;
 
 export const commentsOverlay = `
 <div id="comments-overlay" class="comments-overlay hidden">

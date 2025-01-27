@@ -9,7 +9,7 @@ export const handleIncommingMessage = (msg) => {
   switch (msg.type) {
     case "chat":
       if (targetId == msg.sender) {
-        typingIndicator.classList.remove("hidden");
+        typingIndicator.classList.add("hidden");
         sendMessage(msg.content, targetDiv.dataset.nickname);
       } else {
         targetDiv.classList.add("new-message");
@@ -42,18 +42,16 @@ export const handleIncommingMessage = (msg) => {
       }
       break;
     case "stop-typing":
-      if (targetId == msg.sender) {
-        typingIndicator.classList.add("hidden");
-      } else {
-        user.classList.add("hidden");
-      }
+      typingIndicator.classList.add("hidden");
+      user.classList.add("hidden");
+
   }
 };
 
 export const sendPrivateMessage = (conn) => {
   let message = document.getElementById("message");
   if (conn.readyState != WebSocket.OPEN) {
-    console.error("WebSocket is closed");
+    console.error("WebS9.3ocket is closed");
     return;
   }
   if (message.value.length > 500 || !message.value.trim()) {
@@ -100,6 +98,6 @@ export const typingStatus = (conn) => {
         JSON.stringify({ target: targetId, type: "typing", content: "stop-typing" })
       );
       debounce = false;
-    }, 2000);
+    }, 500);
   });
 };

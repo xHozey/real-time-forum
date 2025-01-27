@@ -31,7 +31,10 @@ export const sendMessage = (message, name) => {
   timestamp.innerText = new Date().toLocaleTimeString();
   div.append(timestamp);
   messagesContainer.append(div);
-  messagesContainer.scroll(0, messagesContainer.scrollHeight);
+  messagesContainer.scrollTo({
+    top: messagesContainer.scrollHeight,
+    behavior: "smooth",
+  });
 };
 
 export const prepandMessage = (message, name, date) => {
@@ -55,15 +58,14 @@ export const prepandMessage = (message, name, date) => {
 
 export const createUser = (user) => {
   const usersList = document.querySelector(".users-list");
-  const div = document.createElement("div");
-  div.classList.add("user-item");
-  div.id = user.id;
+const div = document.createElement("div");
+div.classList.add("user-item");
+div.id = user.id;
 
-  div.setAttribute("data-nickname", `${user.nickname}`);
-  div.innerHTML = `
+div.setAttribute("data-nickname", `${user.nickname}`);
+div.innerHTML = `
     ${user.nickname} 
-    <span id="status-${user.id}" class="${
-    user.status ? "online" : "offline"
+    <span id="status-${user.id}" class="${user.status ? "online" : "offline"
   }"></span>
     <div class="typing-indicator-user hidden typing" id="typing-indicator-${user.id}">
       <span>typing</span>
@@ -75,8 +77,8 @@ export const createUser = (user) => {
     </div>
   `;
 
-  div.addEventListener("click", () => target(user.id));
-  usersList.append(div);
+div.addEventListener("click", () => target(user.id));
+usersList.append(div);
 };
 
 export const postRequest = async (data, url) => {
@@ -178,8 +180,8 @@ export const fillPost = (postInfo) => {
         <div class="profile-img icons"></div>
         <span class="username">${postInfo.author}</span>
         <span class="post-time">${new Date(
-          postInfo.creation_date
-        ).toLocaleDateString("en-US")}</span>
+    postInfo.creation_date
+  ).toLocaleDateString("en-US")}</span>
       </div>
       <div class="categories">
       ${categories.innerHTML ? categories.innerHTML : ""}
@@ -258,14 +260,13 @@ export const fillComment = (commentInfo) => {
   <div class="comment-text">${commentInfo.content}</div>
   <div class="comment-footer">
       <span class="comment-datetime">${new Date(
-        commentInfo.creation_date
-      ).toLocaleDateString("en-US")}</span>
+    commentInfo.creation_date
+  ).toLocaleDateString("en-US")}</span>
       <div class="comment-actions">
           <button id="like-${commentInfo.id}" class="icons actionIcon"></button>
         <span id="like-counter" class="nbr">${commentInfo.likes}</span>
-        <button id="dislike-${
-          commentInfo.id
-        }" class="icons actionIcon"></button>
+        <button id="dislike-${commentInfo.id
+    }" class="icons actionIcon"></button>
         <span id="dislike-counter" class="nbr">${commentInfo.dislikes}</span>
       </div>
   </div>

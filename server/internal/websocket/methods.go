@@ -15,6 +15,10 @@ func (c *Client) read() {
 			log.Println(err)
 			break
 		}
+		_, exist := Clients[c.Id]
+		if !exist {
+			break
+		}
 		if len(msg.Content) > 2000 || len(strings.TrimSpace(msg.Content)) == 0 {
 			continue
 		}
@@ -62,14 +66,16 @@ func (c *Client) notify() {
 	}
 }
 
-func (c *Client) CloseConn(db *sql.DB, id int) {
+func (c *Client) CloseConn(db *sql.DB, id int, isLogout bool) {
 	Mu.Lock()
-	_, exists := Clients[id]
-	if exists {
-		Clients[id].Window--
-		if Clients[id].Window > 0 {
-			Mu.Unlock()
-			return
+	if !isLogout {
+		_, exists := Clients[id]
+		if exists {
+			Clients[id].Window--
+			if Clients[id].Window > 0 {
+				Mu.Unlock()
+				return
+			}
 		}
 	}
 	delete(Clients, id)

@@ -42,11 +42,11 @@ export const handleLocation = async () => {
       <link rel="stylesheet" href="./app/styles/typing_animation.css">
       `;
       app.innerHTML = main;
-      getUsers();
+      await getUsers();
       connectToServer();
       throttleMessages();
       showPostPanel();
-      getPosts();
+      await getPosts();
       addComments();
       throttlePosts();
       break;

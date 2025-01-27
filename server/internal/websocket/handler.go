@@ -16,6 +16,7 @@ func (db *WSlayer) WsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "Upgrade fail", http.StatusUpgradeRequired)
+		return
 	}
 	db.Data.DataDB.Exec("UPDATE user_profile SET status = 1 WHERE id = ?", id)
 	client := &Client{Id: id, Status: true, Conn: conn, Db: *db, Nickname: nickname}
@@ -26,7 +27,7 @@ func (db *WSlayer) WsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	Clients[id].Window++
 	Mu.Unlock()
-	client.notify()
+	go client.notify()
 	client.read()
-	defer client.CloseConn(db.Data.DataDB, id)
+	defer client.CloseConn(db.Data.DataDB, id, false)
 }
