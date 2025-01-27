@@ -79,4 +79,3 @@ func (c *Client) CloseConn(db *sql.DB, id int) {
 	c.notify()
 	c.Conn.Close()
 }
-

@@ -20,7 +20,10 @@ func (db *WSlayer) WsHandler(w http.ResponseWriter, r *http.Request) {
 	db.Data.DataDB.Exec("UPDATE user_profile SET status = 1 WHERE id = ?", id)
 	client := &Client{Id: id, Status: true, Conn: conn, Db: *db, Nickname: nickname}
 	Mu.Lock()
-	Clients[id] = client
+	_, exists := Clients[id]
+	if !exists {
+		Clients[id] = client
+	}
 	Clients[id].Window++
 	Mu.Unlock()
 	client.notify()
