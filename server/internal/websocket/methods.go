@@ -1,6 +1,7 @@
 package websocket
 
 import (
+	"database/sql"
 	"log"
 	"strings"
 	"time"
@@ -60,3 +61,22 @@ func (c *Client) notify() {
 		}
 	}
 }
+
+func (c *Client) CloseConn(db *sql.DB, id int) {
+	Mu.Lock()
+	_, exists := Clients[id]
+	if exists {
+		Clients[id].Window--
+		if Clients[id].Window > 0 {
+			Mu.Unlock()
+			return
+		}
+	}
+	delete(Clients, id)
+	Mu.Unlock()
+	db.Exec("UPDATE user_profile SET status = 0 WHERE id = ?", id)
+	c.Status = false
+	c.notify()
+	c.Conn.Close()
+}
+

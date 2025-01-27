@@ -19,30 +19,11 @@ func (db *WSlayer) WsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	db.Data.DataDB.Exec("UPDATE user_profile SET status = 1 WHERE id = ?", id)
 	client := &Client{Id: id, Status: true, Conn: conn, Db: *db, Nickname: nickname}
-	mu.Lock()
-	_, exists := Clients[id]
-	if !exists {
-		Clients[id] = client
-	}
+	Mu.Lock()
+	Clients[id] = client
 	Clients[id].Window++
-	mu.Unlock()
+	Mu.Unlock()
 	client.notify()
 	client.read()
-	defer func() {
-		mu.Lock()
-		_, exists := Clients[id]
-		if exists {
-			Clients[id].Window--
-			if Clients[id].Window > 0 {
-				mu.Unlock()
-				return
-			}
-		}
-		delete(Clients, id)
-		mu.Unlock()
-		db.Data.DataDB.Exec("UPDATE user_profile SET status = 0 WHERE id = ?", id)
-		client.Status = false
-		client.notify()
-		conn.Close()
-	}()
+	defer client.CloseConn(db.Data.DataDB, id)
 }

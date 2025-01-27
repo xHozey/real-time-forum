@@ -20,7 +20,7 @@ var upgrader = websocket.Upgrader{
 
 var (
 	Clients = make(map[int]*Client)
-	mu      sync.Mutex
+	Mu      sync.Mutex
 )
 
 type Client struct {
